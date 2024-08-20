@@ -1,1 +1,0 @@
-# ai-rate-my-professor
