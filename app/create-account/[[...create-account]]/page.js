@@ -1,16 +1,16 @@
 import {
-    ClerkProvider,
-    SignUp,
-    SignedIn,
-    SignedOut,
-    UserButton
-  } from '@clerk/nextjs';
-import { Box, Button, Typography } from '@mui/material';
+  ClerkProvider,
+  SignUp,
+  SignedIn,
+  SignedOut,
+  UserButton,
+} from "@clerk/nextjs";
+import { Box, Button, Typography } from "@mui/material";
 
 const linen = "#FFF4E9";
 const purple_main = "#8D6B94";
 const purple_light = "#B185A7";
-  
+
 export default function CreateAccountPage() {
   return (
     <Box
@@ -31,8 +31,8 @@ export default function CreateAccountPage() {
         p={2}
         bgcolor={purple_main}
         sx={{
-          mb:3,
-          boxShadow: "1px 1px 1px black"
+          mb: 3,
+          boxShadow: "1px 1px 1px black",
         }}
       >
         <Box
@@ -49,7 +49,7 @@ export default function CreateAccountPage() {
               color: "black",
               bgcolor: purple_light,
               mx: 3,
-              '&:hover': {
+              "&:hover": {
                 bgcolor: purple_light,
                 transform: "scale(1.1)",
               },
@@ -72,7 +72,7 @@ export default function CreateAccountPage() {
               color: "black",
               bgcolor: purple_light,
               mx: 1,
-              '&:hover': {
+              "&:hover": {
                 bgcolor: purple_light,
                 transform: "scale(1.1)",
               },
@@ -88,7 +88,7 @@ export default function CreateAccountPage() {
               color: "black",
               bgcolor: purple_light,
               mx: 1,
-              '&:hover': {
+              "&:hover": {
                 bgcolor: purple_light,
                 transform: "scale(1.1)",
               },
@@ -97,12 +97,9 @@ export default function CreateAccountPage() {
           >
             Create Account
           </Button>
-        </Box>    
+        </Box>
       </Box>
-        <SignedOut>
-          <SignUp />
-        </SignedOut>
+      <SignUp />
     </Box>
-    
-  )
+  );
 }

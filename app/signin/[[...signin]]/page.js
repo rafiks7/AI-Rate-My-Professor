@@ -1,15 +1,10 @@
-import {
-    SignIn,
-    SignedIn,
-    SignedOut,
-    
-  } from '@clerk/nextjs';
-import { Box, Button, Typography } from '@mui/material';
+import { SignIn, SignedIn, SignedOut } from "@clerk/nextjs";
+import { Box, Button, Typography } from "@mui/material";
 
 const linen = "#FFF4E9";
 const purple_main = "#8D6B94";
 const purple_light = "#B185A7";
-  
+
 export default function SignInPage() {
   return (
     <Box
@@ -30,8 +25,8 @@ export default function SignInPage() {
         p={2}
         bgcolor={purple_main}
         sx={{
-          mb:3,
-          boxShadow: "1px 1px 1px black"
+          mb: 3,
+          boxShadow: "1px 1px 1px black",
         }}
       >
         <Box
@@ -48,7 +43,7 @@ export default function SignInPage() {
               color: "black",
               bgcolor: purple_light,
               mx: 3,
-              '&:hover': {
+              "&:hover": {
                 bgcolor: purple_light,
                 transform: "scale(1.1)",
               },
@@ -71,7 +66,7 @@ export default function SignInPage() {
               color: "black",
               bgcolor: purple_light,
               mx: 1,
-              '&:hover': {
+              "&:hover": {
                 bgcolor: purple_light,
                 transform: "scale(1.1)",
               },
@@ -87,7 +82,7 @@ export default function SignInPage() {
               color: "black",
               bgcolor: purple_light,
               mx: 1,
-              '&:hover': {
+              "&:hover": {
                 bgcolor: purple_light,
                 transform: "scale(1.1)",
               },
@@ -96,12 +91,9 @@ export default function SignInPage() {
           >
             Create Account
           </Button>
-        </Box>    
+        </Box>
       </Box>
-        <SignedOut>
-          <SignIn />
-        </SignedOut>
+      <SignIn />
     </Box>
-    
-  )
+  );
 }
