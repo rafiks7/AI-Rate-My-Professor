@@ -1,6 +1,11 @@
 "use client";
-import { Box, Stack, TextField, Button } from "@mui/material";
+import { Box, Stack, TextField, Typography, Button } from "@mui/material";
 import { useState } from "react";
+
+//Colors
+const linen = "#FFF4E9";
+const purple_main = "#8D6B94";
+const purple_light = "#B185A7";
 
 export default function Home() {
   const [messages, setMessages] = useState([
@@ -68,7 +73,92 @@ export default function Home() {
       flexDirection="column"
       justifyContent="center"
       alignItems="center"
+      bgcolor={linen}
     >
+      <Box
+        width="100vw"
+        height="10vh"
+        border="none"
+        display="flex"
+        alignItems="center"
+        justifyContent="center"
+        p={2}
+        bgcolor={purple_main}
+        sx={{
+          mb:3,
+          boxShadow: "1px 1px 1px black"
+        }}
+      >
+        <Box
+          width="100vw"
+          display="flex"
+          alignItems="center"
+          justifyContent="left"
+        >
+          <Typography>*Logo*</Typography>
+          <Button
+            sx={{
+              border: "1px solid black",
+              borderRadius: "10px",
+              color: "black",
+              bgcolor: purple_light,
+              mx: 3,
+              '&:hover': {
+                bgcolor: purple_light,
+                transform: "scale(1.1)",
+              },
+            }}
+            href="http://localhost:3000/"
+          >
+            Dashboard
+          </Button>
+        </Box>
+        <Box
+          width="30vw"
+          display="flex"
+          alignItems="center"
+          justifyContent="right"
+        >
+          <Button
+            sx={{
+              border: "1px solid black",
+              borderRadius: "10px",
+              color: "black",
+              bgcolor: purple_light,
+              mx: 1,
+              '&:hover': {
+                bgcolor: purple_light,
+                transform: "scale(1.1)",
+              },
+            }}
+            href="/signin"
+          >
+            Sign In
+          </Button>
+          <Button
+            sx={{
+              border: "1px solid black",
+              borderRadius: "10px",
+              color: "black",
+              bgcolor: purple_light,
+              mx: 1,
+              '&:hover': {
+                bgcolor: purple_light,
+                transform: "scale(1.1)",
+              },
+            }}
+            href="/create-account"
+          >
+            Create Account
+          </Button>
+        </Box>    
+      </Box>
+
+      <Typography variant="h3" sx={{ fontWeight: "bold", mb:3 }}>
+        The Professor Finder
+      </Typography>
+
+
       <Stack
         direction="column"
         width="500px"
