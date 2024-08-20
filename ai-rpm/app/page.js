@@ -7,7 +7,7 @@ export default function Home() {
     {
       role: "assistant",
       content:
-        "Hi! I am here to help you find a suitable professor. How can I help you?",
+        "Hi! I am here to help you find a suitable professor. What kind of professor are you looking for?",
     },
   ]);
   const [message, setMessage] = useState("");
