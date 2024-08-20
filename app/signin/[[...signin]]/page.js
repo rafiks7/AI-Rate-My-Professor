@@ -1,9 +1,8 @@
 import {
-    ClerkProvider,
     SignIn,
     SignedIn,
     SignedOut,
-    UserButton
+    
   } from '@clerk/nextjs';
 import { Box, Button, Typography } from '@mui/material';
 
@@ -11,7 +10,7 @@ const linen = "#FFF4E9";
 const purple_main = "#8D6B94";
 const purple_light = "#B185A7";
   
-export default function UserAuthPage() {
+export default function SignInPage() {
   return (
     <Box
       width="100vw"
@@ -99,11 +98,9 @@ export default function UserAuthPage() {
           </Button>
         </Box>    
       </Box>
-      <ClerkProvider>
         <SignedOut>
           <SignIn />
         </SignedOut>
-      </ClerkProvider>
     </Box>
     
   )
