@@ -17,7 +17,7 @@ export default function NavBar() {
                 <Box display="flex" alignItems="center" flexGrow={1}>
                     <a href="http://localhost:3000/"><Image src={logo} width={50} height={50}></Image></a>
                 </Box>
-                <Button
+                {/* <Button
                     sx={{
                     border: "1px solid black",
                     borderRadius: "10px",
@@ -33,22 +33,7 @@ export default function NavBar() {
                 >
                     Dashboard
                 </Button>
-                <Button
-                    sx={{
-                    border: "1px solid black",
-                    borderRadius: "10px",
-                    color: "black",
-                    bgcolor: purple_light,
-                    mx: 3,
-                    "&:hover": {
-                        bgcolor: purple_light,
-                        transform: "scale(1.1)",
-                    },
-                    }}
-                    onClick={() => {setDialog(true)}}
-                >
-                    Add Professor
-                </Button>
+                 */}
                 <SignedOut>
                     <Button
                         sx={{
@@ -57,6 +42,7 @@ export default function NavBar() {
                         color: "black",
                         bgcolor: purple_light,
                         mx: 1,
+                        transition: "200ms",
                         "&:hover": {
                             bgcolor: purple_light,
                             transform: "scale(1.1)",
@@ -73,6 +59,7 @@ export default function NavBar() {
                         color: "black",
                         bgcolor: purple_light,
                         mx: 1,
+                        transition: "200ms",
                         "&:hover": {
                             bgcolor: purple_light,
                             transform: "scale(1.1)",
@@ -80,10 +67,27 @@ export default function NavBar() {
                         }}
                         href="/create-account"
                     >
-                        Create Account
+                        Sign Up
                     </Button>
                 </SignedOut>
                 <SignedIn>
+                    <Button
+                        sx={{
+                        border: "1px solid black",
+                        borderRadius: "10px",
+                        color: "black",
+                        bgcolor: purple_light,
+                        mx: 3,
+                        transition: "200ms",
+                        "&:hover": {
+                            bgcolor: purple_light,
+                            transform: "scale(1.1)",
+                        },
+                        }}
+                        onClick={() => {setDialog(true)}}
+                    >
+                        Add Professor
+                    </Button>
                     <UserButton/>
                 </SignedIn>
             </Toolbar>
