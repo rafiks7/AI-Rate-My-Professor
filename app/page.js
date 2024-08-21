@@ -1,7 +1,15 @@
 "use client";
-import { Container, Box, Stack, Dialog, TextField, Typography, Button } from "@mui/material";
+import {
+  Container,
+  Box,
+  Stack,
+  Dialog,
+  TextField,
+  Typography,
+  Button,
+} from "@mui/material";
 import { useState } from "react";
-import { NavBar } from "./Components/navbar.js"
+import { NavBar } from "./Components/navbar.js";
 
 //Colors
 const linen = "#FFF4E9";
@@ -32,7 +40,11 @@ export default function Home() {
       headers: {
         "Content-Type": "application/json",
       },
-      body: JSON.stringify([...messages, { role: "user", content: message }]),
+      body: JSON.stringify({
+        messages: [...messages, { role: "user", content: message }],
+        // These are the filters for the query. They are hardcoded for now but they should be rendered from the user input.
+        filters: {},
+      }),
     }).then(async (response) => {
       const reader = response.body.getReader();
       const decoder = new TextDecoder();
@@ -67,11 +79,7 @@ export default function Home() {
   };
 
   return (
-    <Box
-      minHeight="100vh"
-      display="flex"
-      bgcolor={linen}
-    >
+    <Box minHeight="100vh" display="flex" bgcolor={linen}>
       <Container width="100xw">
         <Box
           display="flex"

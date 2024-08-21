@@ -45,9 +45,11 @@ const scrape = async (document, url) => {
     ?.textContent?.trim();
   rating = rating ? parseFloat(rating) : null;
 
-  const department = document
+  const subject = document
     .querySelector(".TeacherDepartment__StyledDepartmentLink-fl79e8-0")
-    ?.textContent?.trim();
+    ?.textContent
+    ?.replace(/\s*department/i, '')
+    ?.trim();
 
   let difficulty = document
     .querySelectorAll(".FeedbackItem__FeedbackNumber-uof32n-1")[1]
@@ -76,7 +78,7 @@ const scrape = async (document, url) => {
   const profReview = {
     professor: profName,
     school: schoolName,
-    department: department,
+    subject: subject,
     courses: coursesArray,
     rating: rating,
     ratings_count: ratingsCount,
@@ -113,7 +115,7 @@ const load = async (profReview) => {
           professor: profReview["professor"],
           review: review,
           school: profReview["school"],
-          department: profReview["department"],
+          subject: profReview["subject"],
           courses: profReview["courses"],
           rating: profReview["rating"],
           ratings_count: profReview["ratings_count"],
