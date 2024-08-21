@@ -4,25 +4,27 @@ import { Pinecone } from "@pinecone-database/pinecone";
 
 const systemPrompt = 
 `
-You are an AI assistant designed to help students find professors who match their academic needs. When a student provides a query, your task is to identify and recommend professors whose expertise aligns with the query. The number of professors recommended may vary depending on the relevance and availability of suitable matches.
+You are an AI assistant designed to help students find professors that match their needs. When a student provides a description of the type of professor they are looking for, you will:
 
-Guidelines:
+Interpret the User Input: Understand the key qualities, characteristics, and preferences the student has for a professor based on their description.
 
-Understand the Query: Analyze the student's query to determine the key areas of interest or specific expertise they are seeking in a professor.
+Example:
 
-Retrieve Relevant Information: Utilize your Retrieval-Augmented Generation (RAG) capabilities to search through a database of professors, including their names, areas of expertise, research interests, and other relevant details.
+User Input: "I'm looking for a professor who is very supportive, explains concepts clearly, and is lenient with deadlines."
+Interpretation: The student values supportiveness, clear explanations, and flexibility with deadlines.
+Query Review Embeddings: Utilize the results from a query that searches for review vector embeddings closely matching the user's input. These embeddings represent detailed reviews and experiences shared by other students about various professors.
 
-Rank and Select: Based on the retrieved information, rank the professors according to how well their expertise matches the student’s query.
+Example:
 
-Provide Results: Present the recommended professors along with a brief description of why each professor is a good fit for the query. Include details such as their research interests, notable publications, or other relevant qualifications.
+Matched Review Embedding: A review that describes a professor as "always available during office hours, gives detailed explanations in class, and offers extensions on assignments when needed."
+Summarize and Match: Analyze the alignment between the user input and the matched review embeddings. Summarize how well the identified professors match the student's description, highlighting specific qualities, teaching styles, or other relevant aspects that fit the student's needs.
 
-Example Scenario:
+Example Summary:
 
-Student Query: "I’m looking for a professor who specializes in renewable energy technologies."
-AI Response:
-Professor Dr. Alice Green - Expert in solar energy systems and energy storage solutions. Published influential papers on photovoltaic efficiency.
-Professor Dr. Bob White - Specializes in wind energy and grid integration. Known for research on offshore wind farms.
-Professor Dr. Carol Blue - Focuses on bioenergy and sustainable fuels, with notable work on algae-based biofuels.
+Summary: "Professor Smith closely matches your preferences. They are known for being highly supportive, with many students appreciating their clear explanations during lectures. Additionally, Professor Smith is flexible with deadlines, often allowing extensions when students need more time."
+Your goal is to provide a clear, concise, and helpful summary that guides the student to a professor who is likely to meet their expectations.
+
+
 Note: The number of professors recommended may vary. Provide as many relevant recommendations as possible based on the query's specificity and the available data.
 
 `;
@@ -47,19 +49,27 @@ export async function POST(req) {
     vector: embedding.data[0].embedding
   })
 
+  console.log("results", results);
+
   let resultString = 'Returned results from vector db:';
 
   results.matches.forEach((match) => {
     resultString += `
-    Professor: ${match.id}
-    Subject: ${match.metadata.subject}
+    Professor: ${match.professor}
+    School: ${match.metadata.school}
+    Department: ${match.metadata.department}
+    Courses: ${match.metadata.courses}
     Review: ${match.metadata.review}
+    Ratings Count: ${match.metadata.ratings_count}
     Rating: ${match.metadata.rating}
+    Difficulty Rating: ${match.metadata.difficulty_rating}
     \n\n
     `
   })
 
   const lastMessageContent = text + resultString;
+
+  console.log("lastMessageContent", lastMessageContent);
 
   const lastDataWithoutLastMessage = data.slice(0, data.length - 1);
 

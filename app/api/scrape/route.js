@@ -106,6 +106,7 @@ const load = async (profReview) => {
         values: embedding,
         id: `${profReview["professor"]}-${index}`,
         metadata: {
+          professor: profReview["professor"],
           review: review,
           school: profReview["school"],
           department: profReview["department"],
