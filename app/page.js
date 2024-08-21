@@ -1,6 +1,7 @@
 "use client";
-import { Box, Stack, Dialog, TextField, Typography, Button } from "@mui/material";
+import { Container, Box, Stack, Dialog, TextField, Typography, Button } from "@mui/material";
 import { useState } from "react";
+import { NavBar } from "./Components/navbar.js"
 
 //Colors
 const linen = "#FFF4E9";
@@ -90,187 +91,100 @@ export default function Home() {
 
   return (
     <Box
-      width="100vw"
-      height="100vh"
+      minHeight="100vh"
       display="flex"
-      flexDirection="column"
-      justifyContent="center"
-      alignItems="center"
       bgcolor={linen}
     >
-      <Box
-        width="100vw"
-        height="10vh"
-        border="none"
-        display="flex"
-        alignItems="center"
-        justifyContent="center"
-        p={2}
-        bgcolor={purple_main}
-        sx={{
-          mb: 3,
-          boxShadow: "1px 1px 1px black",
-        }}
-      >
+      <Container width="100xw">
         <Box
-          width="100vw"
           display="flex"
+          flexDirection="column"
           alignItems="center"
-          justifyContent="left"
+          mt={10}
+          mb={15}
         >
-          <Typography>*Logo*</Typography>
-          <Button
-            sx={{
-              border: "1px solid black",
-              borderRadius: "10px",
-              color: "black",
-              bgcolor: purple_light,
-              mx: 3,
-              "&:hover": {
-                bgcolor: purple_light,
-                transform: "scale(1.1)",
-              },
-            }}
-            href="http://localhost:3000/"
-          >
-            Dashboard
-          </Button>
-          <Button
-            sx={{
-              border: "1px solid black",
-              borderRadius: "10px",
-              color: "black",
-              bgcolor: purple_light,
-              mx: 3,
-              "&:hover": {
-                bgcolor: purple_light,
-                transform: "scale(1.1)",
-              },
-            }}
-            onClick={() => {setDialog(true)}}
-          >
-            Add Professor
-          </Button>
-        </Box>
-        <Box
-          width="30vw"
-          display="flex"
-          alignItems="center"
-          justifyContent="right"
-        >
-          <Button
-            sx={{
-              border: "1px solid black",
-              borderRadius: "10px",
-              color: "black",
-              bgcolor: purple_light,
-              mx: 1,
-              "&:hover": {
-                bgcolor: purple_light,
-                transform: "scale(1.1)",
-              },
-            }}
-            href="/signin"
-          >
-            Sign In
-          </Button>
-          <Button
-            sx={{
-              border: "1px solid black",
-              borderRadius: "10px",
-              color: "black",
-              bgcolor: purple_light,
-              mx: 1,
-              "&:hover": {
-                bgcolor: purple_light,
-                transform: "scale(1.1)",
-              },
-            }}
-            href="/create-account"
-          >
-            Create Account
-          </Button>
-        </Box>
-      </Box>
+          <Typography variant="h3" sx={{ fontWeight: "bold", mb: 3 }}>
+            The Professor Finder
+          </Typography>
 
-      <Typography variant="h3" sx={{ fontWeight: "bold", mb: 3 }}>
-        The Professor Finder
-      </Typography>
-
-      <Stack
-        direction="column"
-        width="500px"
-        height="650px"
-        border="2px solid black"
-        p={2}
-        spacing={3}
-      >
-        <Stack
-          direction="column"
-          spacing={2}
-          flexGrow={1}
-          overflow="auto"
-          maxHeight="100%"
-        >
-          {messages.map((message, index) => (
-            <Box
-              key={index}
-              display="flex"
-              justifyContent={
-                message.role === "assistant" ? "flex-start" : "flex-end"
-              }
+          <Stack
+            direction="column"
+            width="500px"
+            height="500px"
+            border="2px solid black"
+            p={2}
+            spacing={3}
+          >
+            <Stack
+              direction="column"
+              spacing={2}
+              flexGrow={1}
+              overflow="auto"
+              maxHeight="100%"
             >
-              <Box
-                bgcolor={
-                  message.role === "assistant"
-                    ? "primary.main"
-                    : "secondary.main"
-                }
-                color="white"
-                p={3}
-                borderRadius="40px"
-              >
-                {message.content}
-              </Box>
+              {messages.map((message, index) => (
+                <Box
+                  key={index}
+                  display="flex"
+                  justifyContent={
+                    message.role === "assistant" ? "flex-start" : "flex-end"
+                  }
+                >
+                  <Box
+                    bgcolor={
+                      message.role === "assistant"
+                        ? "primary.main"
+                        : "secondary.main"
+                    }
+                    color="white"
+                    p={3}
+                    borderRadius="40px"
+                  >
+                    {message.content}
+                  </Box>
+                </Box>
+              ))}
+            </Stack>
+            <Stack direction="row" spacing={2}>
+              <TextField
+                label="Message"
+                value={message}
+                onChange={(e) => setMessage(e.target.value)}
+                variant="outlined"
+                fullWidth
+              />
+              <Button variant="contained" onClick={sendMessage}>
+                Send
+              </Button>
+            </Stack>
+          </Stack>
+          <Dialog open={dialog} onClose={() => setDialog(false)}>
+          <Box p={2}>
+            <Typography variant="h4">Add Professor</Typography>
+            <Box mt={2}>
+              <TextField
+                fullWidth
+                label="URL"
+                variant="outlined"
+                value={input}
+                onChange={(e) => setInput(e.target.value)}
+              />
             </Box>
-          ))}
-        </Stack>
-        <Stack direction="row" spacing={2}>
-          <TextField
-            label="Message"
-            value={message}
-            onChange={(e) => setMessage(e.target.value)}
-            variant="outlined"
-            fullWidth
-          />
-          <Button variant="contained" onClick={sendMessage}>
-            Send
-          </Button>
-        </Stack>
-      </Stack>
-      <Dialog open={dialog} onClose={() => setDialog(false)}>
-      <Box p={2}>
-        <Typography variant="h4">Add Professor</Typography>
-        <Box mt={2}>
-          <TextField
-            fullWidth
-            label="URL"
-            variant="outlined"
-            value={input}
-            onChange={(e) => setInput(e.target.value)}
-          />
+            <Box mt={2} display="flex" justifyContent="flex-end">
+              <Button
+                variant="contained"
+                color="primary"
+                onClick={handleSubmit}
+              >
+                Submit
+              </Button>
+            </Box>
+          </Box>
+        </Dialog>
         </Box>
-        <Box mt={2} display="flex" justifyContent="flex-end">
-          <Button
-            variant="contained"
-            color="primary"
-            onClick={handleSubmit}
-          >
-            Submit
-          </Button>
-        </Box>
-      </Box>
-    </Dialog>
+      </Container>
+
+      
     </Box>
   );
 }
