@@ -72,18 +72,32 @@ Note: Please return 3 professors not just the best one
 Remember: You are an expert at sentiment analysis. Use your expertise to analyze the user's sentiment and analyze the reviews sentiment. 
 You can use this information to provide a more personalized response to the user.
 
+Can you have the output in json format:
+{
+  professors:
+ [
+  {
+    professor: "Dr. Emily Stone",
+    subject: "Computer Science",
+    rating: 4.8,
+    summary: "Dr. Stone is a great professor who explains concepts clearly. Her lectures are engaging, and she is always willing to help students during office hours."
+    link: "https://www.example.com/professor1"
+  }
+  ]
+}
 
+  Return the json, nothing less, nothing more.
 `;
 
 export async function POST(req) {
   const data = await req.json();
-  console.log('data', data);
+  console.log("data", data);
   const pc = new Pinecone({ apiKey: process.env.PINECONE_API_KEY });
   const index = pc.index("rag").namespace("ns1");
   const openai = new OpenAI();
 
   const messages = data.messages;
-  console.log('messages', messages);
+  console.log("messages", messages);
 
   const text = messages[messages.length - 1].content;
 
@@ -95,15 +109,15 @@ export async function POST(req) {
     encoding_format: "float",
   });
 
-  if("rating" in filters) {
-    filters.rating = {$gte: filters.rating};
+  if ("rating" in filters) {
+    filters.rating = { $gte: filters.rating };
   }
 
   if ("subject" in filters) {
     filters.subject = filters.subject;
   }
-  
-  if("school" in filters) {
+
+  if ("school" in filters) {
     filters.school = filters.school;
   }
 
@@ -111,7 +125,7 @@ export async function POST(req) {
     topK: 10, // Increase the number of top results to ensure diversity
     includeMetadata: true,
     vector: embedding.data[0].embedding,
-    filter: filters
+    filter: filters,
   });
 
   console.log("results", results);
@@ -150,6 +164,7 @@ export async function POST(req) {
     Ratings Count: ${match.metadata.ratings_count}
     Rating: ${match.metadata.rating}
     Difficulty Rating: ${match.metadata.difficulty_rating}
+    reference: ${match.metadata.link}
     \n\n
     `;
   });
@@ -173,9 +188,15 @@ export async function POST(req) {
       },
     ],
     model: "gpt-4o-mini",
-    stream: true,
+    stream: false,
   });
 
+  console.log(
+    "completion",
+    completion.choices[0].message?.content || completion.choices[0]?.text
+  );
+
+  /*
   const stream = new ReadableStream({
     async start(controller) {
       try {
@@ -192,6 +213,7 @@ export async function POST(req) {
       }
     },
   });
+  */
 
-  return new NextResponse(stream);
+  return new NextResponse(completion);
 }
