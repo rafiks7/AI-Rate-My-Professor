@@ -100,7 +100,7 @@ export default function Home() {
             p={3}
             spacing={3}
             bgcolor={purple_light}
-            mb={3}
+            mb={8}
           >
             {/* <Stack
               direction="column"
@@ -169,14 +169,85 @@ export default function Home() {
           </Stack>
           <Box
             width="700px"
-            height="100px"
             border="2px solid black"
             borderRadius="10px"
             p={3}
-            bgcolor={purple_light}
+            bgcolor={purple_main}
             flexGrow={1}
+            display="flex"
+            flexDirection="column"
+            justifyContent="center"
+            alignItems="center"
           >
-            {messages[messages.length-1]?.content}
+            {/* {messages[messages.length-1]?.content} */}
+            <Box
+              width="90%"
+              height="50px"
+              bgcolor={purple_light}
+              display="flex"
+              justifyContent="center"
+              alignItems="center"
+              border="1px solid black"
+              borderRadius="10px"
+              boxShadow="1px 1px 1px black"
+              fontWeight="bold"
+              mb={2}
+            >
+              Professor Name
+            </Box>
+            <Stack
+              direction="row"
+              width="700px"
+              justifyContent="center"
+              alignItems="center"
+              spacing={3}
+              mb={2}
+            >
+              <Box
+                width="40%"
+                height="50px"
+                bgcolor={purple_light}
+                display="flex"
+                justifyContent="center"
+                alignItems="center"
+                border="1px solid black"
+                borderRadius="10px"
+                boxShadow="1px 1px 1px black"
+                fontWeight="bold"
+              >
+                Subject/Course
+              </Box>
+              <Box
+                width="40%"
+                height="50px"
+                bgcolor={purple_light}
+                display="flex"
+                justifyContent="center"
+                alignItems="center"
+                border="1px solid black"
+                borderRadius="10px"
+                boxShadow="1px 1px 1px black"
+                fontWeight="bold"
+              >
+                Stars
+              </Box>
+            </Stack>
+            <Box
+              width="90%"
+              minHeight="100px"
+              bgcolor={purple_light}
+              display="flex"
+              justifyContent="center"
+              alignItems="center"
+              border="1px solid black"
+              borderRadius="10px"
+              boxShadow="1px 1px 1px black"
+              fontWeight="bold"
+              flexGrow={1}
+              mb={2}
+            >
+              Summary
+            </Box>
           </Box>
         </Box>
       </Container>
