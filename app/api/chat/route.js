@@ -191,10 +191,7 @@ export async function POST(req) {
     stream: false,
   });
 
-  console.log(
-    "completion",
-    completion.choices[0].message?.content || completion.choices[0]?.text
-  );
+  console.log("completion", completion.choices[0].message?.content);
 
   /*
   const stream = new ReadableStream({
@@ -215,5 +212,5 @@ export async function POST(req) {
   });
   */
 
-  return new NextResponse(completion);
+  return new NextResponse(completion.choices[0].message?.content);
 }
