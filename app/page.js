@@ -1,5 +1,5 @@
 "use client";
-import { Box, Stack, TextField, Typography, Button } from "@mui/material";
+import { Box, Stack, Dialog, TextField, Typography, Button } from "@mui/material";
 import { useState } from "react";
 
 //Colors
@@ -16,6 +16,29 @@ export default function Home() {
     },
   ]);
   const [message, setMessage] = useState("");
+  const [dialog, setDialog] = useState(false);
+  const [input, setInput] = useState("");
+
+
+  const handleSubmit = async () => {
+    setDialog(false);
+    setInput("");
+
+    try {
+      const res = await fetch('/api/scrape', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({ data: input }),  
+    });
+
+      const data = await res.json();
+    } catch (error) {
+      console.error('Error:', error);
+    }
+
+  };
 
   const sendMessage = async () => {
     setMessages((messages) => [
@@ -85,8 +108,8 @@ export default function Home() {
         p={2}
         bgcolor={purple_main}
         sx={{
-          mb:3,
-          boxShadow: "1px 1px 1px black"
+          mb: 3,
+          boxShadow: "1px 1px 1px black",
         }}
       >
         <Box
@@ -103,7 +126,7 @@ export default function Home() {
               color: "black",
               bgcolor: purple_light,
               mx: 3,
-              '&:hover': {
+              "&:hover": {
                 bgcolor: purple_light,
                 transform: "scale(1.1)",
               },
@@ -111,6 +134,22 @@ export default function Home() {
             href="http://localhost:3000/"
           >
             Dashboard
+          </Button>
+          <Button
+            sx={{
+              border: "1px solid black",
+              borderRadius: "10px",
+              color: "black",
+              bgcolor: purple_light,
+              mx: 3,
+              "&:hover": {
+                bgcolor: purple_light,
+                transform: "scale(1.1)",
+              },
+            }}
+            onClick={() => {setDialog(true)}}
+          >
+            Add Professor
           </Button>
         </Box>
         <Box
@@ -126,7 +165,7 @@ export default function Home() {
               color: "black",
               bgcolor: purple_light,
               mx: 1,
-              '&:hover': {
+              "&:hover": {
                 bgcolor: purple_light,
                 transform: "scale(1.1)",
               },
@@ -142,7 +181,7 @@ export default function Home() {
               color: "black",
               bgcolor: purple_light,
               mx: 1,
-              '&:hover': {
+              "&:hover": {
                 bgcolor: purple_light,
                 transform: "scale(1.1)",
               },
@@ -151,13 +190,12 @@ export default function Home() {
           >
             Create Account
           </Button>
-        </Box>    
+        </Box>
       </Box>
 
-      <Typography variant="h3" sx={{ fontWeight: "bold", mb:3 }}>
+      <Typography variant="h3" sx={{ fontWeight: "bold", mb: 3 }}>
         The Professor Finder
       </Typography>
-
 
       <Stack
         direction="column"
@@ -210,6 +248,29 @@ export default function Home() {
           </Button>
         </Stack>
       </Stack>
+      <Dialog open={dialog} onClose={() => setDialog(false)}>
+      <Box p={2}>
+        <Typography variant="h4">Add Professor</Typography>
+        <Box mt={2}>
+          <TextField
+            fullWidth
+            label="URL"
+            variant="outlined"
+            value={input}
+            onChange={(e) => setInput(e.target.value)}
+          />
+        </Box>
+        <Box mt={2} display="flex" justifyContent="flex-end">
+          <Button
+            variant="contained"
+            color="primary"
+            onClick={handleSubmit}
+          >
+            Submit
+          </Button>
+        </Box>
+      </Box>
+    </Dialog>
     </Box>
   );
 }
