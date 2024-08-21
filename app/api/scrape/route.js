@@ -13,14 +13,14 @@ export async function POST(req) {
   const dom = new JSDOM(html);
   const document = dom.window.document;
 
-  const profReview = await scrape(document);
+  const profReview = await scrape(document, url);
 
   await load(profReview);
 
   return new NextResponse(profReview);
 }
 
-const scrape = async (document) => {
+const scrape = async (document, url) => {
   const profName = document
     .querySelector(".NameTitle__Name-dowf0z-0")
     ?.textContent?.trim();
@@ -62,13 +62,16 @@ const scrape = async (document) => {
     ? parseInt(ratingsCount.replace(/[^\d]/g, ""), 10)
     : null;
 
-  const reviews = document.querySelectorAll(
-    ".Comments__StyledComments-dzzyvm-0"
-  );
-  let reviewsArray = [];
-  reviews.forEach((review) => {
-    reviewsArray.push(review.textContent?.trim() || "");
-  });
+    const reviews = document.querySelectorAll(".Comments__StyledComments-dzzyvm-0");
+    let reviewsArray = [];
+    
+    // Iterate over the NodeList and collect reviews
+    reviews.forEach((review, index) => {
+      if (index < 10) { // Limit to the first 10 reviews
+        reviewsArray.push(review.textContent?.trim() || "");
+      }
+    });
+    
 
   const profReview = {
     professor: profName,
@@ -79,6 +82,7 @@ const scrape = async (document) => {
     ratings_count: ratingsCount,
     difficulty_rating: difficulty,
     reviews: reviewsArray,
+    link: url,
   };
 
   return profReview;
@@ -114,12 +118,11 @@ const load = async (profReview) => {
           rating: profReview["rating"],
           ratings_count: profReview["ratings_count"],
           difficulty_rating: profReview["difficulty_rating"],
+          link: profReview["link"],
         },
       };
     })
   );
-
-  console.log("processed_data:", processed_data);
 
   await index.namespace("ns1").upsert(processed_data);
 };

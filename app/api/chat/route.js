@@ -4,29 +4,41 @@ import { Pinecone } from "@pinecone-database/pinecone";
 
 const systemPrompt = 
 `
-You are an AI assistant designed to help students find professors that match their needs. When a student provides a description of the type of professor they are looking for, you will:
+You are an AI designed to help students find professors that best fit their needs based on user descriptions. Your task is to process a user's input, which includes a description of a professor they are looking for, and a list of professors that match that description.
 
-Interpret the User Input: Understand the key qualities, characteristics, and preferences the student has for a professor based on their description.
+Input:
 
+A textual description of the ideal professor (e.g., "Looking for a professor who is knowledgeable in machine learning and has a reputation for being approachable and supportive").
+A list of professors who match the description.
+Output:
+
+A summarized list of the matching professors.
+For each professor, provide a brief description of how they fit the user's needs, emphasizing their relevant attributes and qualities.
+Instructions for Output:
+
+Clearly state the user's needs and how each professor meets those needs.
+Use simple and conversational language.
+Focus on highlighting the strengths of each professor in relation to the user's description.
 Example:
 
-User Input: "I'm looking for a professor who is very supportive, explains concepts clearly, and is lenient with deadlines."
-Interpretation: The student values supportiveness, clear explanations, and flexibility with deadlines.
-Query Review Embeddings: Utilize the results from a query that searches for review vector embeddings closely matching the user's input. These embeddings represent detailed reviews and experiences shared by other students about various professors.
+User Input:
 
-Example:
+Description: "I need a professor who specializes in data science, has published recent research, and is known for being engaging in lectures."
+Matching Professors:
+Dr. Jane Smith
+Prof. John Doe
+Dr. Emily Johnson
+AI Output:
 
-Matched Review Embedding: A review that describes a professor as "always available during office hours, gives detailed explanations in class, and offers extensions on assignments when needed."
-Summarize and Match: Analyze the alignment between the user input and the matched review embeddings. Summarize how well the identified professors match the student's description, highlighting specific qualities, teaching styles, or other relevant aspects that fit the student's needs.
+"Based on your description, here are some professors who might be a great fit for you:
 
-Example Summary:
+Dr. Jane Smith: Dr. Smith is a renowned expert in data science and has recently published influential research in the field. Her lectures are highly engaging, and she is known for her ability to make complex topics accessible and interesting.
 
-Summary: "Professor Smith closely matches your preferences. They are known for being highly supportive, with many students appreciating their clear explanations during lectures. Additionally, Professor Smith is flexible with deadlines, often allowing extensions when students need more time."
-Your goal is to provide a clear, concise, and helpful summary that guides the student to a professor who is likely to meet their expectations.
+Prof. John Doe: Prof. Doe also specializes in data science and has an impressive record of recent publications. He is well-regarded for his interactive teaching style, which keeps students actively involved and motivated.
 
+Dr. Emily Johnson: Dr. Johnson is a leading researcher in data science with a strong focus on practical applications. Her classes are known for being dynamic and thought-provoking, and she is praised for her approachability and willingness to help students outside of class.
 
-Note: The number of professors recommended may vary. Provide as many relevant recommendations as possible based on the query's specificity and the available data.
-
+Note: Please return 3 professors not just the best one
 `;
 
 export async function POST(req) {
@@ -44,18 +56,38 @@ export async function POST(req) {
   });
 
   const results = await index.query({
-    topK: 3,
+    topK: 10, // Increase the number of top results to ensure diversity
     includeMetadata: true,
     vector: embedding.data[0].embedding
-  })
+  });
 
   console.log("results", results);
+  
+  // Assume each result includes professor ID in metadata
+  const professorMap = new Map();
+  
+  for (const result of results.matches) {
+    const professorId = result.metadata.professor;
+    if (!professorMap.has(professorId)) {
+      professorMap.set(professorId, result);
+    }
+    
+    // Stop if we have enough unique professors
+    if (professorMap.size >= 3) {
+      break;
+    }
+  }
+  
+  // Convert the map values to an array and slice to get the top 3
+  const uniqueResults = Array.from(professorMap.values()).slice(0, 3);
+  
+  console.log("unique Results", uniqueResults);
 
   let resultString = 'Returned results from vector db:';
 
-  results.matches.forEach((match) => {
+  uniqueResults.forEach((match) => {
     resultString += `
-    Professor: ${match.professor}
+    Professor: ${match.metadata.professor}
     School: ${match.metadata.school}
     Department: ${match.metadata.department}
     Courses: ${match.metadata.courses}

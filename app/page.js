@@ -12,7 +12,7 @@ export default function Home() {
     {
       role: "assistant",
       content:
-        "Hi! I am here to help you find a suitable professor. What kind of professor are you looking for?",
+        "Hi! I am here to help you find a suitable professor. Please describe the type of professor you are looking for.",
     },
   ]);
   const [message, setMessage] = useState("");
