@@ -13,8 +13,9 @@ import { NavBar } from "./Components/navbar.js";
 
 //Colors
 const linen = "#FFF4E9";
-const purple_main = "#8D6B94";
-const purple_light = "#B185A7";
+const purple_dark = "#8D6B94";
+const purple_mid = "#B185A7";
+const purple_light = "#baa4be";
 
 export default function Home() {
   const [messages, setMessages] = useState([
@@ -99,7 +100,7 @@ export default function Home() {
             borderRadius="10px"
             p={3}
             spacing={3}
-            bgcolor={purple_light}
+            bgcolor={purple_mid}
             mb={8}
           >
             {/* <Stack
@@ -150,7 +151,7 @@ export default function Home() {
                 sx={{
                   height: "50px",
                   color: "black",
-                  bgcolor: purple_main,
+                  bgcolor: purple_dark,
                   px: 3,
                   border: "1px solid black",
                   borderRadius: "100px",
@@ -172,14 +173,13 @@ export default function Home() {
             border="2px solid black"
             borderRadius="10px"
             p={3}
-            bgcolor={purple_main}
+            bgcolor={purple_dark}
             flexGrow={1}
             display="flex"
             flexDirection="column"
             justifyContent="center"
             alignItems="center"
           >
-            {/* {messages[messages.length-1]?.content} */}
             <Box
               width="90%"
               height="50px"
@@ -245,8 +245,9 @@ export default function Home() {
               fontWeight="bold"
               flexGrow={1}
               mb={2}
+              p={2}
             >
-              Summary
+              {results}
             </Box>
           </Box>
         </Box>
