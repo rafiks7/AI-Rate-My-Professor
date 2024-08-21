@@ -17,29 +17,6 @@ export default function Home() {
     },
   ]);
   const [message, setMessage] = useState("");
-  const [dialog, setDialog] = useState(false);
-  const [input, setInput] = useState("");
-
-
-  const handleSubmit = async () => {
-    setDialog(false);
-    setInput("");
-
-    try {
-      const res = await fetch('/api/scrape', {
-        method: 'POST',
-        headers: {
-          'Content-Type': 'application/json',
-        },
-        body: JSON.stringify({ data: input }),  
-    });
-
-      const data = await res.json();
-    } catch (error) {
-      console.error('Error:', error);
-    }
-
-  };
 
   const sendMessage = async () => {
     setMessages((messages) => [
@@ -158,33 +135,8 @@ export default function Home() {
               </Button>
             </Stack>
           </Stack>
-          <Dialog open={dialog} onClose={() => setDialog(false)}>
-          <Box p={2}>
-            <Typography variant="h4">Add Professor</Typography>
-            <Box mt={2}>
-              <TextField
-                fullWidth
-                label="URL"
-                variant="outlined"
-                value={input}
-                onChange={(e) => setInput(e.target.value)}
-              />
-            </Box>
-            <Box mt={2} display="flex" justifyContent="flex-end">
-              <Button
-                variant="contained"
-                color="primary"
-                onClick={handleSubmit}
-              >
-                Submit
-              </Button>
-            </Box>
-          </Box>
-        </Dialog>
         </Box>
       </Container>
-
-      
     </Box>
   );
 }

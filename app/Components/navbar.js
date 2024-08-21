@@ -1,16 +1,39 @@
 'use client'
 
-import { Box, AppBar, Toolbar, Button } from "@mui/material"
+import { Box, AppBar, Toolbar, Button, Dialog, Typography, TextField } from "@mui/material";
 import { SignedIn, SignedOut, UserButton } from "@clerk/nextjs";
-import Image from "next/image"
+import { useState } from "react";
+import Image from "next/image";
 
-import logo from "/public/logo.png"
+import logo from "/public/logo.png";
 
 const linen = "#FFF4E9";
 const purple_main = "#8D6B94";
 const purple_light = "#B185A7";
 
 export default function NavBar() {
+  const [dialog, setDialog] = useState(false);
+  const [input, setInput] = useState("");
+
+  const handleSubmit = async () => {
+    setDialog(false);
+    setInput("");
+
+    try {
+      const res = await fetch('/api/scrape', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({ data: input }),  
+    });
+
+      const data = await res.json();
+    } catch (error) {
+      console.error('Error:', error);
+    }
+  }
+
   return (
       <AppBar position="static">
         <Toolbar sx={{ bgcolor: purple_main, boxShadow: "2px 2px 2px black"}}>
@@ -74,6 +97,30 @@ export default function NavBar() {
             <UserButton/>
           </SignedIn>
         </Toolbar>
+
+        <Dialog open={dialog} onClose={() => setDialog(false)}>
+          <Box p={2}>
+            <Typography variant="h4">Add Professor</Typography>
+            <Box mt={2}>
+              <TextField
+                fullWidth
+                label="URL"
+                variant="outlined"
+                value={input}
+                onChange={(e) => setInput(e.target.value)}
+              />
+            </Box>
+            <Box mt={2} display="flex" justifyContent="flex-end">
+              <Button
+                variant="contained"
+                color="primary"
+                onClick={handleSubmit}
+              >
+                Submit
+              </Button>
+            </Box>
+          </Box>
+        </Dialog>
       </AppBar>
   )
 }
