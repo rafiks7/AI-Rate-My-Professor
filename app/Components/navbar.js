@@ -1,5 +1,10 @@
+'use client'
+
 import { Box, AppBar, Toolbar, Button } from "@mui/material"
 import { SignedIn, SignedOut, UserButton } from "@clerk/nextjs";
+import Image from "next/image"
+
+import logo from "/public/logo.png"
 
 const linen = "#FFF4E9";
 const purple_main = "#8D6B94";
@@ -10,7 +15,7 @@ export default function NavBar() {
         <AppBar position="static">
             <Toolbar sx={{ bgcolor: purple_main, boxShadow: "2px 2px 2px black"}}>
                 <Box display="flex" alignItems="center" flexGrow={1}>
-                    <a href="http://localhost:3000/"><Image src="../public/logo.png" width={50} height={50}></Image></a>
+                    <a href="http://localhost:3000/"><Image src={logo} width={50} height={50}></Image></a>
                 </Box>
                 <Button
                     sx={{
