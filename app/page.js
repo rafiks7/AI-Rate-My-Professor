@@ -85,7 +85,7 @@ export default function Home() {
           display="flex"
           flexDirection="column"
           alignItems="center"
-          mt={10}
+          mt={5}
           mb={15}
         >
           <Typography variant="h3" sx={{ fontWeight: "bold", mb: 3 }}>
@@ -94,13 +94,15 @@ export default function Home() {
 
           <Stack
             direction="column"
-            width="500px"
-            height="500px"
+            width="700px"
             border="2px solid black"
-            p={2}
+            borderRadius="10px"
+            p={3}
             spacing={3}
+            bgcolor={purple_light}
+            mb={3}
           >
-            <Stack
+            {/* <Stack
               direction="column"
               spacing={2}
               flexGrow={1}
@@ -129,20 +131,53 @@ export default function Home() {
                   </Box>
                 </Box>
               ))}
-            </Stack>
-            <Stack direction="row" spacing={2}>
-              <TextField
-                label="Message"
-                value={message}
+            </Stack> */}
+            <Stack direction="row" alignItems="center" spacing={3}>
+              <Box bgcolor="white" display="flex" flexGrow={1}>
+                <TextField
+                  multiline
+                  rows={3}
+                  placeholder="Please describe the type of professor you are looking for."
+                  value={message}
+                  onChange={(e) => setMessage(e.target.value)}
+                  variant="filled"
+                  color="secondary"
+                  fullWidth
+                  
+                />
+              </Box>
+              <Button
+                sx={{
+                  height: "50px",
+                  color: "black",
+                  bgcolor: purple_main,
+                  px: 3,
+                  border: "1px solid black",
+                  borderRadius: "100px",
+                  boxShadow: "1px 1px 1px black",
+                  '&:hover': {
+                    bgcolor: linen,
+                    transform: "scale(1.1)"
+                  }
+                }}
+                onClick={sendMessage}
                 onChange={(e) => setMessage(e.target.value)}
-                variant="outlined"
-                fullWidth
-              />
-              <Button variant="contained" onClick={sendMessage}>
-                Send
+              >
+                Search
               </Button>
             </Stack>
           </Stack>
+          <Box
+            width="700px"
+            height="100px"
+            border="2px solid black"
+            borderRadius="10px"
+            p={3}
+            bgcolor={purple_light}
+            flexGrow={1}
+          >
+            {messages[messages.length-1]?.content}
+          </Box>
         </Box>
       </Container>
     </Box>
