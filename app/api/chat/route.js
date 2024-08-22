@@ -3,63 +3,41 @@ import OpenAI from "openai";
 import { Pinecone } from "@pinecone-database/pinecone";
 
 const systemPrompt = `
-You are an AI designed to help students find professors that best fit their needs based on user descriptions. 
-Your task is to process a user's input, which includes a description of a professor they are looking for, and a list of professors that match that description.
+You are an AI designed to help students find professors that best fit their needs based on user descriptions. Your task is to process a user's input, which includes a description of the ideal professor they are looking for, and a list of professors that match that description.
 
 Input:
+- A textual description of the ideal professor (e.g., "Looking for a professor who is knowledgeable in machine learning and has a reputation for being approachable and supportive").
+- A list of professors who match the description, each with detailed information including their name, school, subject, courses, reviews, and ratings.
 
-A textual description of the ideal professor (e.g., "Looking for a professor who is knowledgeable in machine learning and has a reputation for being approachable and supportive").
-
-A list of professors who match the description:
-  "Professor": "Dr. Emily Stone",
-  "School": "University of California, Los Angeles",
-  "Subject": "Computer Science",
-  "Courses": ["CS101", "CS201", "CS301"],
-  "Review": "Dr. Stone is a great professor who explains concepts clearly. Her lectures are engaging, and she is always willing to help students during office hours.",
-  "Ratings Count": 120,
-  "Rating": 4.8,
-  "Difficulty Rating": 3.5
-
-  "Professor": "Dr. Sarah Johnson",
-  "School": "Stanford University",
-  "Subject": "Physics",
-  "Courses": ["PHYS101", "PHYS202", "PHYS303"],
-  "Review": "Dr. Johnson is very knowledgeable and passionate about physics. Her exams are tough, but her teaching style makes the material easier to understand.",
-  "Ratings Count": 150,
-  "Rating": 4.7,
-  "Difficulty Rating": 4.2
-
-Summary:
-
-A summarized list of the matching professors.
-For each professor, provide a brief description of how they fit the user's needs, emphasizing their relevant attributes and qualities.
+Summary Task: Generate a concise summary that directly addresses the user's specific needs, clearly explaining how each professor aligns with those needs. Ensure that your summary is focused on responding to the user's input by highlighting the strengths of each professor that are most relevant to the description provided.
 
 Instructions for Summary:
+- For each professor, provide a brief and clear explanation of how they meet the user's criteria, focusing on relevant qualities such as subject expertise, teaching style, and student feedback.
+- Use simple, conversational language and ensure that the summary is easy to understand.
+- Incorporate sentiment analysis to align the tone of your summary with the user's expectations and preferences.
 
-Clearly state the user's needs and how each professor meets those needs.
-Use simple and conversational language.
-Focus on highlighting the strengths of each professor in relation to the user's description.
 Example:
 
 User Input:
 
 Description: "I need a professor who specializes in data science, has published recent research, and is known for being engaging in lectures."
+
 Matching Professors:
+
 Dr. Jane Smith
 Dr. Sarah Johnson
 
 AI Summary:
 
-"Based on your description, here are some professors who might be a great fit for you:
+Dr. Jane Smith at MIT is renowned for her cutting-edge research in data science and her dynamic, engaging lecture style. She consistently receives high praise for making complex topics accessible and interesting.
 
-Dr. Emily Stone at UCLA is praised for her clear explanations and engaging lectures in Computer Science. Her approachable nature and helpfulness during office hours make her a top-rated professor with a 4.8 rating from over 120 reviews.
+Dr. Sarah Johnson at Stanford University is another excellent choice. Although her primary focus is on Physics, her innovative teaching methods and passion for research make her lectures both informative and captivating."
 
-Dr. Sarah Johnson at Stanford is a dedicated Physics professor who simplifies complex topics. Her demanding exams are balanced by her thorough teaching, resulting in a 4.7 rating from 150 reviews.
 
-Remember this when writing your summary: You are an expert at sentiment analysis. Use your expertise to analyze the user's sentiment and analyze the reviews sentiment. 
-You can use this information to provide a more personalized response to the user.
+Output Format:
 
-Can you have the output in json format:
+The entire output should be formatted as a JSON object. 
+Here is an example structure:
 {
   professors:
  [
@@ -73,7 +51,7 @@ Can you have the output in json format:
   ]
 }
 
-  your entire response/output is going to consist of a single JSON object {}, and you will NOT wrap it within JSON md markers
+  Your entire response/output is going to consist of a single JSON object {}, and you will NOT wrap it within JSON md markers
 `;
 
 export async function POST(req) {
@@ -83,10 +61,10 @@ export async function POST(req) {
   const index = pc.index("rag").namespace("ns1");
   const openai = new OpenAI();
 
-  const messages = data.messages;
-  console.log("messages", messages);
+  const message = data.message;
+  console.log("message", message);
 
-  const text = messages[messages.length - 1].content;
+  const text = message.content;
 
   const filters = data.filters;
 
@@ -167,11 +145,9 @@ export async function POST(req) {
     `;
   });
 
-  const lastMessageContent = text + `\nI expect ${numberFilter} professors in the output.\n` + resultString;
+  const newMessageContent = text + `\nI expect ${numberFilter} professors in the output.\n` + resultString;
 
-  console.log("lastMessageContent", lastMessageContent);
-
-  const lastDataWithoutLastMessage = messages.slice(0, data.length - 1);
+  console.log("newMessageContent:", newMessageContent);
 
   const completion = await openai.chat.completions.create({
     messages: [
@@ -179,10 +155,9 @@ export async function POST(req) {
         role: "system",
         content: systemPrompt,
       },
-      ...lastDataWithoutLastMessage,
       {
         role: "user",
-        content: lastMessageContent,
+        content: newMessageContent,
       },
     ],
     model: "gpt-4o-mini",

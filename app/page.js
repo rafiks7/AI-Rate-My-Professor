@@ -18,21 +18,9 @@ const purple_mid = "#B185A7";
 const purple_light = "#baa4be";
 
 export default function Home() {
-  const [messages, setMessages] = useState([
-    {
-      role: "assistant",
-      content:
-        "Hi! I am here to help you find a suitable professor. Please describe the type of professor you are looking for.",
-    },
-  ]);
   const [message, setMessage] = useState("");
 
   const sendMessage = async () => {
-    setMessages((messages) => [
-      ...messages,
-      { role: "user", content: message },
-      { role: "assistant", content: "" },
-    ]);
 
     setMessage("");
 
@@ -42,11 +30,14 @@ export default function Home() {
         "Content-Type": "application/json",
       },
       body: JSON.stringify({
-        messages: [...messages, { role: "user", content: message }],
+        message: { role: "user", content: message },
         // These are the filters for the query. They are hardcoded for now but they should be rendered from the user input.
         filters: {},
       }),
     }).then(async (response) => {
+      const data = await response.json();
+      console.log(data);
+      /*
       const reader = response.body.getReader();
       const decoder = new TextDecoder();
 
@@ -78,7 +69,9 @@ export default function Home() {
         });
 
         return reader.read().then(processText);
+       
       });
+       */
     });
   };
 
