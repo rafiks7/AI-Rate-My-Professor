@@ -9,7 +9,7 @@ import {
   Button,
 } from "@mui/material";
 import { useState } from "react";
-import ProfItem from "./Components/profitem.js"
+import ProfCard from "./Components/profcard.js"
 
 //Colors
 const linen = "#FFF4E9";
@@ -171,7 +171,7 @@ export default function Home() {
               </Button>
             </Stack>
           </Stack>
-        <ProfItem />
+        <ProfCard />
         </Box>
       </Container>
     </Box>
