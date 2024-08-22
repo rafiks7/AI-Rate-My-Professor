@@ -11,8 +11,8 @@ import {
   Grid,
   Item,
 } from "@mui/material";
-import { useState } from "react";
-import ProfCard from "./Components/profcard.js"
+import { useEffect, useState } from "react";
+import ProfCard from "./Components/profcard.js";
 import FilterTextField from "./Components/filtertextfield.js";
 
 //Colors
@@ -29,6 +29,30 @@ export default function Home() {
   const [subjectFilter, setSubjectFilter] = useState(null);
   const [ratingFilter, setRatingFilter] = useState(null);
   const [numberFilter, setNumberFilter] = useState(null);
+  const [subjects, setSubjects] = useState([]);
+  const [schools, setSchools] = useState([]);
+
+  const updateFields = async () => {
+    try {
+      const response = await fetch("/api/pinecone", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({ message: "hello" }), 
+      }).then(async (response) => {
+        console.log('response from client side:', response)
+        const data = await response.json();
+        console.log("client metaData:", data);
+      });
+    } catch (error) {
+      console.error("error in fetching data: ", error);
+    }
+  };
+
+  useEffect(() => {
+    updateFields();
+  }, []);
 
   const sendMessage = async () => {
     setLoading(true);
@@ -43,57 +67,57 @@ export default function Home() {
         body: JSON.stringify({
           message: { role: "user", content: message },
           // These are the filters for the query. They are hardcoded for now but they should be rendered from the user input.
-          filters:{
+          filters: {
             ...(schoolFilter && { school: schoolFilter }),
             ...(subjectFilter && { subject: subjectFilter }),
             ...(ratingFilter && { rating: parseFloat(ratingFilter) }),
             ...(numberFilter && { number: parseInt(numberFilter) }),
           },
-        })
+        }),
       }).then(async (response) => {
         const data = await response.json();
-        await setProfessorsJSON(data.professors) // get array of professors from json data
-        console.log('professors:', professorsJSON)
-      }) 
+        await setProfessorsJSON(data.professors); // get array of professors from json data
+        console.log("professors:", professorsJSON);
+      });
     } catch (er) {
       console.error("error in fetching data: " + er);
     } finally {
       setLoading(false);
     }
   };
-    
-      // const reader = response.body.getReader();
-      // const decoder = new TextDecoder();
 
-      // let result = "";
+  // const reader = response.body.getReader();
+  // const decoder = new TextDecoder();
 
-      // return reader.read().then(function processText({ done, value }) {
-      //   if (done) {
-      //     return result;
-      //   }
+  // let result = "";
 
-      //   const text = decoder.decode(value || new Uint8Array(), {
-      //     stream: true,
-      //   });
+  // return reader.read().then(function processText({ done, value }) {
+  //   if (done) {
+  //     return result;
+  //   }
 
-      //   setMessages((messages) => {
-      //     let lastMessage = messages[messages.length - 1];
-      //     let otherMessages = messages.slice(0, messages.length - 1);
+  //   const text = decoder.decode(value || new Uint8Array(), {
+  //     stream: true,
+  //   });
 
-      //     console.log("lastMessage: " + lastMessage)
-      //     console.log("otherMessages: " + otherMessages)
+  //   setMessages((messages) => {
+  //     let lastMessage = messages[messages.length - 1];
+  //     let otherMessages = messages.slice(0, messages.length - 1);
 
-      //     return [
-      //       ...otherMessages,
-      //       {
-      //         ...lastMessage,
-      //         content: lastMessage.content + text,
-      //       },
-      //     ];
-      //   });
+  //     console.log("lastMessage: " + lastMessage)
+  //     console.log("otherMessages: " + otherMessages)
 
-      //   return reader.read().then(processText);
-      // });
+  //     return [
+  //       ...otherMessages,
+  //       {
+  //         ...lastMessage,
+  //         content: lastMessage.content + text,
+  //       },
+  //     ];
+  //   });
+
+  //   return reader.read().then(processText);
+  // });
 
   return (
     <Box minHeight="100vh" display="flex" bgcolor={linen}>
@@ -141,10 +165,10 @@ export default function Home() {
                   border: "1px solid black",
                   borderRadius: "100px",
                   boxShadow: "1px 1px 1px black",
-                  '&:hover': {
+                  "&:hover": {
                     bgcolor: linen,
-                    transform: "scale(1.1)"
-                  }
+                    transform: "scale(1.1)",
+                  },
                 }}
                 onClick={sendMessage}
                 onChange={(e) => setMessage(e.target.value)}
@@ -152,22 +176,42 @@ export default function Home() {
                 Search
               </Button>
             </Stack>
-            <Grid container >
+            <Grid container>
               <Grid item xs={3}>
                 <Typography>School</Typography>
-                <FilterTextField placeholder="Stanford" value={schoolFilter} inputMode={'text'} onChange={(e) => setSchoolFilter(e.target.value)} />
+                <FilterTextField
+                  placeholder="Stanford"
+                  value={schoolFilter || ''}
+                  inputMode={"text"}
+                  onChange={(e) => setSchoolFilter(e.target.value)}
+                />
               </Grid>
               <Grid item xs={3}>
                 <Typography>Subject</Typography>
-                <FilterTextField placeholder="Computer Science" value={subjectFilter} inputMode={'text'} onChange={(e) => setSubjectFilter(e.target.value)} />
+                <FilterTextField
+                  placeholder="Computer Science"
+                  value={subjectFilter || ''}
+                  inputMode={"text"}
+                  onChange={(e) => setSubjectFilter(e.target.value)}
+                />
               </Grid>
               <Grid item xs={3}>
                 <Typography>Rating (1-5)</Typography>
-                <FilterTextField placeholder="3.6" value={ratingFilter} inputMode={'decimal'} onChange={(e) => setRatingFilter(e.target.value)}/>
+                <FilterTextField
+                  placeholder="3.6"
+                  value={ratingFilter || ''}
+                  inputMode={"decimal"}
+                  onChange={(e) => setRatingFilter(e.target.value)}
+                />
               </Grid>
               <Grid item xs={3}>
                 <Typography># of results</Typography>
-                <FilterTextField placeholder="4" value={numberFilter} inputMode={'numeric'} onChange={(e) => setNumberFilter(e.target.value)}/>
+                <FilterTextField
+                  placeholder="4"
+                  value={numberFilter || ''}
+                  inputMode={"numeric"}
+                  onChange={(e) => setNumberFilter(e.target.value)}
+                />
               </Grid>
             </Grid>
           </Stack>
@@ -180,18 +224,15 @@ export default function Home() {
                 mt: 6,
               }}
             >
-              <CircularProgress
-                size={45}
-                sx={{ color: purple_dark }}
-                />
+              <CircularProgress size={45} sx={{ color: purple_dark }} />
             </Box>
           )}
           {professorsJSON.map((professor) => (
-            <ProfCard 
-              name={professor.professor} 
-              subject={professor.subject} 
-              rating={professor.rating} 
-              summary={professor.summary} 
+            <ProfCard
+              name={professor.professor}
+              subject={professor.subject}
+              rating={professor.rating}
+              summary={professor.summary}
             />
           ))}
         </Box>
