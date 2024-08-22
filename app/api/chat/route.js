@@ -32,8 +32,6 @@ Dr. Sarah Johnson
 <<<<<<< HEAD
 AI Summary:
 =======
-"
-Based on your description, here are some professors who might be a great fit for you:
 >>>>>>> profitem
 
 Dr. Jane Smith at MIT is renowned for her cutting-edge research in data science and her dynamic, engaging lecture style. She consistently receives high praise for making complex topics accessible and interesting.
@@ -44,12 +42,7 @@ Dr. Sarah Johnson at Stanford University is another excellent choice. Although h
 
 Output Format:
 =======
-Dr. Sarah Johnson at Stanford is a dedicated Physics professor who simplifies complex topics. Her demanding exams are balanced by her thorough teaching, resulting in a 4.7 rating from 150 reviews.
-"
 
-Notes: 
-If the user specifies how many professors, return the requested number of professors that are asked for that best fit the criteria. If there are not enough professors to meet the requested amount and that fit the criteria, return as many professors as possible that best fit the criteria. 
-If the user does not specify how many professors to return, return 3 professors: the professor that best fits the criteria, as well as 2 more professors that fit the criteria.
 >>>>>>> profitem
 
 The entire output should be formatted as a JSON object. 
@@ -90,7 +83,6 @@ Example:
 User Input: "I want a professor that does not give a lot of HW."
 Transformed Output: "Looking for a professor with a low homework load, minimal assignments, and fewer take-home tasks."
 =======
-Return the json, nothing less, nothing more.
 >>>>>>> profitem
 `;
 
