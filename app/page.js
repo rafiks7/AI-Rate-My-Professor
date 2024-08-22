@@ -65,6 +65,9 @@ export default function Home() {
           let lastMessage = messages[messages.length - 1];
           let otherMessages = messages.slice(0, messages.length - 1);
 
+          console.log(lastMessage)
+          console.log(otherMessages)
+
           return [
             ...otherMessages,
             {
