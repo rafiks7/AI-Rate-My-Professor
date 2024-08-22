@@ -27,6 +27,8 @@ export default function Home() {
   ]);
   const [message, setMessage] = useState("");
 
+  const [professors, setProfessors] = useState();
+
   const sendMessage = async () => {
     setMessages((messages) => [
       ...messages,
@@ -47,38 +49,39 @@ export default function Home() {
         filters: {},
       }),
     }).then(async (response) => {
-      const reader = response.body.getReader();
-      const decoder = new TextDecoder();
+      setProfessors(response)
+      // const reader = response.body.getReader();
+      // const decoder = new TextDecoder();
 
-      let result = "";
+      // let result = "";
 
-      return reader.read().then(function processText({ done, value }) {
-        if (done) {
-          return result;
-        }
+      // return reader.read().then(function processText({ done, value }) {
+      //   if (done) {
+      //     return result;
+      //   }
 
-        const text = decoder.decode(value || new Uint8Array(), {
-          stream: true,
-        });
+      //   const text = decoder.decode(value || new Uint8Array(), {
+      //     stream: true,
+      //   });
 
-        setMessages((messages) => {
-          let lastMessage = messages[messages.length - 1];
-          let otherMessages = messages.slice(0, messages.length - 1);
+      //   setMessages((messages) => {
+      //     let lastMessage = messages[messages.length - 1];
+      //     let otherMessages = messages.slice(0, messages.length - 1);
 
-          console.log(lastMessage)
-          console.log(otherMessages)
+      //     console.log("lastMessage: " + lastMessage)
+      //     console.log("otherMessages: " + otherMessages)
 
-          return [
-            ...otherMessages,
-            {
-              ...lastMessage,
-              content: lastMessage.content + text,
-            },
-          ];
-        });
+      //     return [
+      //       ...otherMessages,
+      //       {
+      //         ...lastMessage,
+      //         content: lastMessage.content + text,
+      //       },
+      //     ];
+      //   });
 
-        return reader.read().then(processText);
-      });
+      //   return reader.read().then(processText);
+      // });
     });
   };
 
@@ -106,36 +109,6 @@ export default function Home() {
             bgcolor={purple_mid}
             mb={8}
           >
-            {/* <Stack
-              direction="column"
-              spacing={2}
-              flexGrow={1}
-              overflow="auto"
-              maxHeight="100%"
-            >
-              {messages.map((message, index) => (
-                <Box
-                  key={index}
-                  display="flex"
-                  justifyContent={
-                    message.role === "assistant" ? "flex-start" : "flex-end"
-                  }
-                >
-                  <Box
-                    bgcolor={
-                      message.role === "assistant"
-                        ? "primary.main"
-                        : "secondary.main"
-                    }
-                    color="white"
-                    p={3}
-                    borderRadius="40px"
-                  >
-                    {message.content}
-                  </Box>
-                </Box>
-              ))}
-            </Stack> */}
             <Stack direction="row" alignItems="center" spacing={3}>
               <Box bgcolor="white" display="flex" flexGrow={1}>
                 <TextField
@@ -171,6 +144,13 @@ export default function Home() {
               </Button>
             </Stack>
           </Stack>
+        {/* <Box>
+          professors.forEach(prof => {
+            <Typography>
+              {prof}
+            </Typography>
+          });
+        </Box> */}
         <ProfCard />
         </Box>
       </Container>
