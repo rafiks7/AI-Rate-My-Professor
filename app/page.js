@@ -142,18 +142,18 @@ export default function Home() {
                 Search
               </Button>
             </Stack>
-            <Grid container spacing={2}>
+            <Grid container >
               <Grid item xs={4}>
                 <Typography>School</Typography>
-                <FilterTextField placeholder="Enter School" />
+                <FilterTextField placeholder="Stanford" />
               </Grid>
               <Grid item xs={4}>
                 <Typography>Subject</Typography>
-                <FilterTextField placeholder="Enter Subject" />
+                <FilterTextField placeholder="Computer Science" />
               </Grid>
               <Grid item xs={4}>
-                <Typography>Rating</Typography>
-                <FilterTextField placeholder="Enter Rating" />
+                <Typography>Rating (1-5)</Typography>
+                <FilterTextField placeholder="4" />
               </Grid>
             </Grid>
           </Stack>
