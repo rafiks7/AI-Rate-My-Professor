@@ -90,7 +90,7 @@ Can you have the output in json format:
   ]
 }
 
-  Return the json, nothing less, nothing more.
+Return the json, nothing less, nothing more.
 `;
 
 export async function POST(req) {

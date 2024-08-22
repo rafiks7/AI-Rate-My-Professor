@@ -50,14 +50,13 @@ export default function Home() {
       }),
     }).then(async (response) => {
       const data = await response.json();
-      //setProfessors(data);
       console.log("data:");
       console.log(data);
       console.log("data.profs:");
       console.log(data.professors);
       console.log("data.profs.prof:");
       console.log(data.professors[0].professor);
-      setProfessors(data.professors) // get array of professors from json data
+      await setProfessors(data.professors) // get array of professors from json data
       console.log("setprof:");
       console.log(professors);
     })  
