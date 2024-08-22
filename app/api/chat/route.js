@@ -2,7 +2,6 @@ import { NextResponse } from "next/server";
 import OpenAI from "openai";
 import { Pinecone } from "@pinecone-database/pinecone";
 
-
 //This is the main system prompt for an AI that returns summaries and JSON.
 const systemPrompt = `
 You are an AI designed to help students find professors that best fit their needs based on user descriptions. Your task is to process a user's input, which includes a description of the ideal professor they are looking for, and a list of professors that match that description.
@@ -56,7 +55,7 @@ Here is an example structure:
   Your entire response/output is going to consist of a single JSON object {}, and you will NOT wrap it within JSON md markers
 `;
 
-//This is a system prompt for a secondary AI that transforms user input into a structured format suitable for vector embedding. 
+//This is a system prompt for a secondary AI that transforms user input into a structured format suitable for vector embedding.
 const systemPrompt2 = `
 System Prompt:
 
@@ -74,6 +73,9 @@ Example:
 
 User Input: "I want a professor that does not give a lot of HW."
 Transformed Output: "Looking for a professor with a low homework load, minimal assignments, and fewer take-home tasks."
+
+You will only return the transformed output. Do not return the main requirements, structured statement, or key attributes separately. 
+Your response should be a single sentence that captures the essence of the user's request in a structured format.
 `;
 
 export async function POST(req) {
@@ -110,6 +112,7 @@ export async function POST(req) {
   //extract filters from data
   const filters = data.filters;
 
+  console.log("filters", filters);
 
   //embed the transformed text
   const embedding = await openai.embeddings.create({
@@ -118,12 +121,11 @@ export async function POST(req) {
     encoding_format: "float",
   });
 
-
   //extract filters
   let numberFilter = 3;
   let ratingFilter, subjectFilter, schoolFilter;
 
-  if("number" in filters) {
+  if ("number" in filters) {
     numberFilter = filters.number;
   }
 
@@ -141,7 +143,7 @@ export async function POST(req) {
 
   //query vector db based on filters and embedding
   const results = await index.query({
-    topK: numberFilter*5, // Increase the number of reviews based on how many unique professors we want to find
+    topK: numberFilter * 5, // Increase the number of reviews based on how many unique professors we want to find
     includeMetadata: true,
     vector: embedding.data[0].embedding,
     filter: {
@@ -168,12 +170,18 @@ export async function POST(req) {
   }
 
   // Convert the map values to an array and slice it to the desired number of unique professors
-  const uniqueResults = Array.from(professorMap.values()).slice(0, numberFilter);
+  const uniqueResults = Array.from(professorMap.values()).slice(
+    0,
+    numberFilter
+  );
+
+  const numberOfUniqueResults = uniqueResults.length;
 
   console.log("unique Results", uniqueResults);
 
   //format the results
-  let resultString = "These are the results retrieved from a vector database about professor reviews:";
+  let resultString =
+    "These are the results retrieved from a vector database about professor reviews:";
 
   uniqueResults.forEach((match) => {
     resultString += `
@@ -192,7 +200,10 @@ export async function POST(req) {
   });
 
   //new message content after integrating the results from vector db
-  const newMessageContent = text + `\nI expect ${numberFilter} professors in the output.\n` + resultString;
+  const newMessageContent =
+    text +
+    `\nI expect ${numberOfUniqueResults} professors in the output.\n` +
+    resultString;
 
   console.log("newMessageContent:", newMessageContent);
 

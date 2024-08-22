@@ -40,10 +40,10 @@ const textfieldTheme = createTheme({
 });
 
 export default function FilterTextField(props) {
-  const {placeholder, sx} = props; // edit these to get more inputs
+  const {placeholder, sx, value, onChange, inputMode} = props; // edit these to get more inputs
   return (
     <ThemeProvider theme={textfieldTheme}>
-      <TextField placeholder={placeholder} sx={sx} />
+      <TextField placeholder={placeholder} sx={sx} value={value} inputProps={{inputMode: inputMode}} onChange={onChange}/>
     </ThemeProvider>
   )
 }

@@ -25,6 +25,10 @@ export default function Home() {
   const [message, setMessage] = useState("");
   const [professorsJSON, setProfessorsJSON] = useState([]);
   const [loading, setLoading] = useState(false);
+  const [schoolFilter, setSchoolFilter] = useState(null);
+  const [subjectFilter, setSubjectFilter] = useState(null);
+  const [ratingFilter, setRatingFilter] = useState(null);
+  const [numberFilter, setNumberFilter] = useState(null);
 
   const sendMessage = async () => {
     setLoading(true);
@@ -39,11 +43,17 @@ export default function Home() {
         body: JSON.stringify({
           message: { role: "user", content: message },
           // These are the filters for the query. They are hardcoded for now but they should be rendered from the user input.
-          filters: {},
-        }),
+          filters:{
+            ...(schoolFilter && { school: schoolFilter }),
+            ...(subjectFilter && { subject: subjectFilter }),
+            ...(ratingFilter && { rating: parseFloat(ratingFilter) }),
+            ...(numberFilter && { number: parseInt(numberFilter) }),
+          },
+        })
       }).then(async (response) => {
         const data = await response.json();
         await setProfessorsJSON(data.professors) // get array of professors from json data
+        console.log('professors:', professorsJSON)
       }) 
     } catch (er) {
       console.error("error in fetching data: " + er);
@@ -143,17 +153,21 @@ export default function Home() {
               </Button>
             </Stack>
             <Grid container >
-              <Grid item xs={4}>
+              <Grid item xs={3}>
                 <Typography>School</Typography>
-                <FilterTextField placeholder="Stanford" />
+                <FilterTextField placeholder="Stanford" value={schoolFilter} inputMode={'text'} onChange={(e) => setSchoolFilter(e.target.value)} />
               </Grid>
-              <Grid item xs={4}>
+              <Grid item xs={3}>
                 <Typography>Subject</Typography>
-                <FilterTextField placeholder="Computer Science" />
+                <FilterTextField placeholder="Computer Science" value={subjectFilter} inputMode={'text'} onChange={(e) => setSubjectFilter(e.target.value)} />
               </Grid>
-              <Grid item xs={4}>
+              <Grid item xs={3}>
                 <Typography>Rating (1-5)</Typography>
-                <FilterTextField placeholder="4" />
+                <FilterTextField placeholder="3.6" value={ratingFilter} inputMode={'decimal'} onChange={(e) => setRatingFilter(e.target.value)}/>
+              </Grid>
+              <Grid item xs={3}>
+                <Typography># of results</Typography>
+                <FilterTextField placeholder="4" value={numberFilter} inputMode={'numeric'} onChange={(e) => setNumberFilter(e.target.value)}/>
               </Grid>
             </Grid>
           </Stack>
@@ -168,8 +182,8 @@ export default function Home() {
             >
               <CircularProgress
                 size={45}
-                color={purple_dark}
-              />
+                sx={{ color: purple_dark }}
+                />
             </Box>
           )}
           {professorsJSON.map((professor) => (
