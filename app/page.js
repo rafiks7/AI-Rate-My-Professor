@@ -9,7 +9,7 @@ import {
   Button,
 } from "@mui/material";
 import { useState } from "react";
-import ProfItem from "./Components/profitem.js"
+import ProfCard from "./Components/profcard.js"
 
 //Colors
 const linen = "#FFF4E9";
@@ -19,6 +19,8 @@ const purple_light = "#baa4be";
 
 export default function Home() {
   const [message, setMessage] = useState("");
+
+  const [professorsJSON, setProfessorsJSON] = useState([]);
 
   const sendMessage = async () => {
 
@@ -36,44 +38,42 @@ export default function Home() {
       }),
     }).then(async (response) => {
       const data = await response.json();
-      console.log(data);
-      /*
-      const reader = response.body.getReader();
-      const decoder = new TextDecoder();
-
-      let result = "";
-
-      return reader.read().then(function processText({ done, value }) {
-        if (done) {
-          return result;
-        }
-
-        const text = decoder.decode(value || new Uint8Array(), {
-          stream: true,
-        });
-
-        setMessages((messages) => {
-          let lastMessage = messages[messages.length - 1];
-          let otherMessages = messages.slice(0, messages.length - 1);
-
-          console.log(lastMessage)
-          console.log(otherMessages)
-
-          return [
-            ...otherMessages,
-            {
-              ...lastMessage,
-              content: lastMessage.content + text,
-            },
-          ];
-        });
-
-        return reader.read().then(processText);
-       
-      });
-       */
-    });
+      await setProfessorsJSON(data.professors) // get array of professors from json data
+    }) 
   };
+    
+      // const reader = response.body.getReader();
+      // const decoder = new TextDecoder();
+
+      // let result = "";
+
+      // return reader.read().then(function processText({ done, value }) {
+      //   if (done) {
+      //     return result;
+      //   }
+
+      //   const text = decoder.decode(value || new Uint8Array(), {
+      //     stream: true,
+      //   });
+
+      //   setMessages((messages) => {
+      //     let lastMessage = messages[messages.length - 1];
+      //     let otherMessages = messages.slice(0, messages.length - 1);
+
+      //     console.log("lastMessage: " + lastMessage)
+      //     console.log("otherMessages: " + otherMessages)
+
+      //     return [
+      //       ...otherMessages,
+      //       {
+      //         ...lastMessage,
+      //         content: lastMessage.content + text,
+      //       },
+      //     ];
+      //   });
+
+      //   return reader.read().then(processText);
+      // });
 
   return (
     <Box minHeight="100vh" display="flex" bgcolor={linen}>
@@ -99,36 +99,6 @@ export default function Home() {
             bgcolor={purple_mid}
             mb={8}
           >
-            {/* <Stack
-              direction="column"
-              spacing={2}
-              flexGrow={1}
-              overflow="auto"
-              maxHeight="100%"
-            >
-              {messages.map((message, index) => (
-                <Box
-                  key={index}
-                  display="flex"
-                  justifyContent={
-                    message.role === "assistant" ? "flex-start" : "flex-end"
-                  }
-                >
-                  <Box
-                    bgcolor={
-                      message.role === "assistant"
-                        ? "primary.main"
-                        : "secondary.main"
-                    }
-                    color="white"
-                    p={3}
-                    borderRadius="40px"
-                  >
-                    {message.content}
-                  </Box>
-                </Box>
-              ))}
-            </Stack> */}
             <Stack direction="row" alignItems="center" spacing={3}>
               <Box bgcolor="white" display="flex" flexGrow={1}>
                 <TextField
@@ -164,7 +134,11 @@ export default function Home() {
               </Button>
             </Stack>
           </Stack>
-        <ProfItem />
+          <Box width="70%">
+            {professorsJSON.map((professor) => (
+              <ProfCard name={professor.professor} subject={professor.subject} stars={professor.rating} summary={professor.summary} />
+            ))}
+          </Box>
         </Box>
       </Container>
     </Box>
