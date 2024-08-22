@@ -48,19 +48,20 @@ export default function Home() {
         // These are the filters for the query. They are hardcoded for now but they should be rendered from the user input.
         filters: {},
       }),
-    })
+    }).then(async (response) => {
+      const data = await response.json();
+      //setProfessors(data);
+      console.log("data:");
+      console.log(data);
+      console.log("data.profs:");
+      console.log(data.professors);
+      console.log("data.profs.prof:");
+      console.log(data.professors[0].professor);
+      setProfessors(data.professors) // get array of professors from json data
+      console.log("setprof:");
+      console.log(professors);
+    })  
 
-    const data = await response.json();
-    //setProfessors(data);
-    console.log("data:");
-    console.log(data);
-    console.log("data.profs:");
-    console.log(data.professors);
-    console.log("data.profs.prof:");
-    console.log(data.professors[0].professor);
-    setProfessors(data.professors) // get array of professors from json data
-    console.log("setprof:");
-    console.log(professors)
   };
     
       // const reader = response.body.getReader();
