@@ -1,13 +1,12 @@
 'use client'
 
 import { Box, Stack } from "@mui/material";
-import { useState } from "react";
 
 const purple_light = "#B185A7";
 const purple_dark = "#8D6B94";
 
 export default function ProfCard(items) {
-  const {name, subject, stars, summary} = items
+  const {name, subject, rating, summary} = items
   return (
     <Box
       width="700px"
@@ -70,7 +69,7 @@ export default function ProfCard(items) {
           boxShadow="1px 1px 1px black"
           fontWeight="bold"
         >
-          {stars}
+          {rating}
         </Box>
       </Stack>
       <Box

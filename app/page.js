@@ -8,9 +8,12 @@ import {
   Typography,
   Button,
   CircularProgress,
+  Grid,
+  Item,
 } from "@mui/material";
 import { useState } from "react";
 import ProfCard from "./Components/profcard.js"
+import FilterTextField from "./Components/filtertextfield.js";
 
 //Colors
 const linen = "#FFF4E9";
@@ -139,6 +142,20 @@ export default function Home() {
                 Search
               </Button>
             </Stack>
+            <Grid container spacing={2}>
+              <Grid item xs={4}>
+                <Typography>School</Typography>
+                <FilterTextField placeholder="Enter School" />
+              </Grid>
+              <Grid item xs={4}>
+                <Typography>Subject</Typography>
+                <FilterTextField placeholder="Enter Subject" />
+              </Grid>
+              <Grid item xs={4}>
+                <Typography>Rating</Typography>
+                <FilterTextField placeholder="Enter Rating" />
+              </Grid>
+            </Grid>
           </Stack>
           {loading && (
             <Box
@@ -156,7 +173,12 @@ export default function Home() {
             </Box>
           )}
           {professorsJSON.map((professor) => (
-            <ProfCard name={professor.professor} subject={professor.subject} stars={professor.rating} summary={professor.summary} />
+            <ProfCard 
+              name={professor.professor} 
+              subject={professor.subject} 
+              rating={professor.rating} 
+              summary={professor.summary} 
+            />
           ))}
         </Box>
       </Container>
