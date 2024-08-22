@@ -247,7 +247,7 @@ export default function Home() {
               mb={2}
               p={2}
             >
-              {results}
+              Summary
             </Box>
           </Box>
         </Box>
