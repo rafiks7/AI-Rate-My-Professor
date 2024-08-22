@@ -6,8 +6,8 @@ import { useState } from "react";
 const purple_light = "#B185A7";
 const purple_dark = "#8D6B94";
 
-export default function ProfCard() {
-  //const professor, subject, stars = {props}
+export default function ProfCard(items) {
+  const {name, subject, stars, summary} = items
   return (
     <Box
       width="700px"
@@ -34,7 +34,7 @@ export default function ProfCard() {
         fontWeight="bold"
         mb={2}
       >
-        Professor
+        {name}
       </Box>
       <Stack
         direction="row"
@@ -56,7 +56,7 @@ export default function ProfCard() {
           boxShadow="1px 1px 1px black"
           fontWeight="bold"
         >
-          subj
+          {subject}
         </Box>
         <Box
           width="40%"
@@ -70,7 +70,7 @@ export default function ProfCard() {
           boxShadow="1px 1px 1px black"
           fontWeight="bold"
         >
-          stars
+          {stars}
         </Box>
       </Stack>
       <Box
@@ -88,7 +88,7 @@ export default function ProfCard() {
         mb={2}
         p={2}
       >
-        Summary
+        {summary}
       </Box>
     </Box>
   )

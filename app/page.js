@@ -27,7 +27,7 @@ export default function Home() {
   ]);
   const [message, setMessage] = useState("");
 
-  const [professors, setProfessors] = useState([]);
+  const [professorsJSON, setProfessorsJSON] = useState([]);
 
   const sendMessage = async () => {
     setMessages((messages) => [
@@ -50,17 +50,8 @@ export default function Home() {
       }),
     }).then(async (response) => {
       const data = await response.json();
-      console.log("data:");
-      console.log(data);
-      console.log("data.profs:");
-      console.log(data.professors);
-      console.log("data.profs.prof:");
-      console.log(data.professors[0].professor);
-      await setProfessors(data.professors) // get array of professors from json data
-      console.log("setprof:");
-      console.log(professors);
-    })  
-
+      await setProfessorsJSON(data.professors) // get array of professors from json data
+    }) 
   };
     
       // const reader = response.body.getReader();
@@ -155,14 +146,11 @@ export default function Home() {
               </Button>
             </Stack>
           </Stack>
-          <Box>
-            {/* {professors.map((professor) => (
-              <Box>
-                {professor.professor}
-              </Box>
-            ))} */}
+          <Box width="70%">
+            {professorsJSON.map((professor) => (
+              <ProfCard name={professor.professor} subject={professor.subject} stars={professor.rating} summary={professor.summary} />
+            ))}
           </Box>
-          <ProfCard />
         </Box>
       </Container>
     </Box>
