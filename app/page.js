@@ -27,7 +27,7 @@ export default function Home() {
   ]);
   const [message, setMessage] = useState("");
 
-  const [professors, setProfessors] = useState();
+  const [professors, setProfessors] = useState([]);
 
   const sendMessage = async () => {
     setMessages((messages) => [
@@ -48,8 +48,21 @@ export default function Home() {
         // These are the filters for the query. They are hardcoded for now but they should be rendered from the user input.
         filters: {},
       }),
-    }).then(async (response) => {
-      setProfessors(response)
+    })
+
+    const data = await response.json();
+    //setProfessors(data);
+    console.log("data:");
+    console.log(data);
+    console.log("data.profs:");
+    console.log(data.professors);
+    console.log("data.profs.prof:");
+    console.log(data.professors[0].professor);
+    setProfessors(data.professors) // get array of professors from json data
+    console.log("setprof:");
+    console.log(professors)
+  };
+    
       // const reader = response.body.getReader();
       // const decoder = new TextDecoder();
 
@@ -82,8 +95,6 @@ export default function Home() {
 
       //   return reader.read().then(processText);
       // });
-    });
-  };
 
   return (
     <Box minHeight="100vh" display="flex" bgcolor={linen}>
@@ -144,14 +155,14 @@ export default function Home() {
               </Button>
             </Stack>
           </Stack>
-        {/* <Box>
-          professors.forEach(prof => {
-            <Typography>
-              {prof}
-            </Typography>
-          });
-        </Box> */}
-        <ProfCard />
+          <Box>
+            {/* {professors.map((professor) => (
+              <Box>
+                {professor.professor}
+              </Box>
+            ))} */}
+          </Box>
+          <ProfCard />
         </Box>
       </Container>
     </Box>
