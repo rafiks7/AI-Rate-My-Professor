@@ -2,6 +2,8 @@ import { NextResponse } from "next/server";
 import OpenAI from "openai";
 import { Pinecone } from "@pinecone-database/pinecone";
 
+
+//This is the main system prompt for an AI that returns summaries and JSON.
 const systemPrompt = `
 You are an AI designed to help students find professors that best fit their needs based on user descriptions. Your task is to process a user's input, which includes a description of the ideal professor they are looking for, and a list of professors that match that description.
 
@@ -54,26 +56,70 @@ Here is an example structure:
   Your entire response/output is going to consist of a single JSON object {}, and you will NOT wrap it within JSON md markers
 `;
 
+//This is a system prompt for a secondary AI that transforms user input into a structured format suitable for vector embedding. 
+const systemPrompt2 = `
+System Prompt:
+
+You are an intelligent assistant that helps students find professors that match their specific needs by analyzing user input and transforming it into a structured format suitable for vector embedding. Your goal is to extract the core requirements from the user's input, rephrase it into a clear and concise statement, and highlight the key attributes or keywords that will be compared with other professor reviews stored in a vector database. Ensure the transformation captures the essence of the user's request in a way that maximizes the accuracy of the comparison process.
+
+Task:
+
+When a user provides a description of the type of professor they want, follow these steps:
+
+Extract the Main Requirement: Identify the key preference or requirement expressed by the user.
+Rephrase into a Structured Statement: Transform the user’s input into a concise and structured sentence that clearly conveys their preference.
+Highlight Key Attributes/Keywords: Include relevant keywords or phrases that will be used to match the user's request with professor reviews.
+Output the Structured Statement: Provide the final structured statement that will be embedded into the vector database.
+Example:
+
+User Input: "I want a professor that does not give a lot of HW."
+Transformed Output: "Looking for a professor with a low homework load, minimal assignments, and fewer take-home tasks."
+`;
+
 export async function POST(req) {
+  //receives data from the client
   const data = await req.json();
-  console.log("data", data);
+  //create pinecone and openai instances
   const pc = new Pinecone({ apiKey: process.env.PINECONE_API_KEY });
   const index = pc.index("rag").namespace("ns1");
   const openai = new OpenAI();
 
+  //extract user message
   const message = data.message;
   console.log("message", message);
+  let text = message.content;
 
-  const text = message.content;
+  //transform user input to structured format
+  const transform = await openai.chat.completions.create({
+    messages: [
+      {
+        role: "system",
+        content: systemPrompt2,
+      },
+      {
+        role: "user",
+        content: text,
+      },
+    ],
+    model: "gpt-4o-mini",
+    stream: false,
+  });
 
+  text = transform.choices[0].message?.content;
+
+  //extract filters from data
   const filters = data.filters;
 
+
+  //embed the transformed text
   const embedding = await openai.embeddings.create({
     model: "text-embedding-3-small",
     input: text,
     encoding_format: "float",
   });
 
+
+  //extract filters
   let numberFilter = 3;
   let ratingFilter, subjectFilter, schoolFilter;
 
@@ -93,8 +139,9 @@ export async function POST(req) {
     schoolFilter = filters.school;
   }
 
+  //query vector db based on filters and embedding
   const results = await index.query({
-    topK: numberFilter*5, // Increase the number of top results to ensure diversity
+    topK: numberFilter*5, // Increase the number of reviews based on how many unique professors we want to find
     includeMetadata: true,
     vector: embedding.data[0].embedding,
     filter: {
@@ -106,7 +153,7 @@ export async function POST(req) {
 
   console.log("results", results);
 
-  // Assume each result includes professor ID in metadata
+  //Ensure results are unique based on professor ID
   const professorMap = new Map();
 
   for (const result of results.matches) {
@@ -115,19 +162,18 @@ export async function POST(req) {
       professorMap.set(professorId, result);
     }
 
-    // Stop if we have enough unique professors
     if (professorMap.size >= numberFilter) {
       break;
     }
   }
 
-  // Convert the map values to an array and slice to get the top 3
+  // Convert the map values to an array and slice it to the desired number of unique professors
   const uniqueResults = Array.from(professorMap.values()).slice(0, numberFilter);
 
   console.log("unique Results", uniqueResults);
 
-  let resultString =
-    "These are the results retrieved from a vector database about professor reviews:";
+  //format the results
+  let resultString = "These are the results retrieved from a vector database about professor reviews:";
 
   uniqueResults.forEach((match) => {
     resultString += `
@@ -145,10 +191,12 @@ export async function POST(req) {
     `;
   });
 
+  //new message content after integrating the results from vector db
   const newMessageContent = text + `\nI expect ${numberFilter} professors in the output.\n` + resultString;
 
   console.log("newMessageContent:", newMessageContent);
 
+  //generate a response based on the new message content
   const completion = await openai.chat.completions.create({
     messages: [
       {
