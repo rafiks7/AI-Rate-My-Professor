@@ -7,6 +7,7 @@ import {
   TextField,
   Typography,
   Button,
+  CircularProgress,
 } from "@mui/material";
 import { useState } from "react";
 import ProfCard from "./Components/profcard.js"
@@ -19,27 +20,33 @@ const purple_light = "#baa4be";
 
 export default function Home() {
   const [message, setMessage] = useState("");
-
   const [professorsJSON, setProfessorsJSON] = useState([]);
+  const [loading, setLoading] = useState(false);
 
   const sendMessage = async () => {
-
+    setLoading(true);
     setMessage("");
 
-    const response = await fetch("/api/chat", {
-      method: "POST",
-      headers: {
-        "Content-Type": "application/json",
-      },
-      body: JSON.stringify({
-        message: { role: "user", content: message },
-        // These are the filters for the query. They are hardcoded for now but they should be rendered from the user input.
-        filters: {},
-      }),
-    }).then(async (response) => {
-      const data = await response.json();
-      await setProfessorsJSON(data.professors) // get array of professors from json data
-    }) 
+    try {
+      const response = await fetch("/api/chat", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({
+          message: { role: "user", content: message },
+          // These are the filters for the query. They are hardcoded for now but they should be rendered from the user input.
+          filters: {},
+        }),
+      }).then(async (response) => {
+        const data = await response.json();
+        await setProfessorsJSON(data.professors) // get array of professors from json data
+      }) 
+    } catch (er) {
+      console.error("error in fetching data: " + er);
+    } finally {
+      setLoading(false);
+    }
   };
     
       // const reader = response.body.getReader();
@@ -110,7 +117,6 @@ export default function Home() {
                   variant="filled"
                   color="secondary"
                   fullWidth
-                  
                 />
               </Box>
               <Button
@@ -134,11 +140,24 @@ export default function Home() {
               </Button>
             </Stack>
           </Stack>
-          <Box width="70%">
-            {professorsJSON.map((professor) => (
-              <ProfCard name={professor.professor} subject={professor.subject} stars={professor.rating} summary={professor.summary} />
-            ))}
-          </Box>
+          {loading && (
+            <Box
+              sx={{
+                display: "flex",
+                justifyContent: "center",
+                alignItems: "center",
+                mt: 6,
+              }}
+            >
+              <CircularProgress
+                size={45}
+                color={purple_dark}
+              />
+            </Box>
+          )}
+          {professorsJSON.map((professor) => (
+            <ProfCard name={professor.professor} subject={professor.subject} stars={professor.rating} summary={professor.summary} />
+          ))}
         </Box>
       </Container>
     </Box>
