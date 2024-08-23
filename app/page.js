@@ -15,6 +15,8 @@ import {
 import { useEffect, useState } from "react";
 import ProfCard from "./Components/profcard.js";
 import FilterTextField from "./Components/filtertextfield.js";
+import ExpandMoreIcon from "@mui/icons-material/ExpandMore"
+
 
 //Colors
 const linen = "#FFF4E9";
