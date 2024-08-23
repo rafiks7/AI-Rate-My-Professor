@@ -1,108 +1,55 @@
 "use client";
 
-import { Box, Stack, Link } from "@mui/material";
+import { Typography, Link, Accordion, AccordionDetails, AccordionSummary, AccordionActions, Button } from "@mui/material";
+import ExpandMoreIcon from "@mui/icons-material/ExpandMore"
 
-const purple_light = "#B185A7";
+//Colors
+const linen = "#FFF4E9";
 const purple_dark = "#8D6B94";
+const purple_mid = "#B185A7";
+const purple_light = "#baa4be";
+
 
 export default function ProfCard(items) {
   const { name, subject, rating, summary, link } = items;
   return (
-    <Box
-      width="700px"
-      border="2px solid black"
-      borderRadius="10px"
-      p={3}
-      bgcolor={purple_dark}
-      flexGrow={1}
-      display="flex"
-      flexDirection="column"
-      justifyContent="center"
-      alignItems="center"
+    <Accordion sx={{ 
+      width: "90vw", 
+      maxWidth: "800px", 
+      backgroundColor: {purple_dark}, 
+      border: '2px solid black',
+      borderRadius: '10px',
+      mb: 2
+      }}
     >
-      <Box
-        width="90%"
-        height="50px"
-        bgcolor={purple_light}
-        display="flex"
-        justifyContent="center"
-        alignItems="center"
-        border="1px solid black"
-        borderRadius="10px"
-        boxShadow="1px 1px 1px black"
-        fontWeight="bold"
-        mb={2}
+      <AccordionSummary
+        expandIcon={<ExpandMoreIcon />}
+        sx={{ backgroundColor: `${purple_dark}` }}
       >
-        <Link
-          href={link}
-          underline="none"
-          color="inherit"
-          target="_blank" // Open link in a new tab
-          rel="noopener noreferrer" // Security best practice
-          sx={{
-            textDecoration: 'none', // Remove default underline
-            '&:hover': {
-              textDecoration: 'underline', // Add underline on hover
-            },
-          }}
-        >
-          {name}
-        </Link>
-      </Box>
-      <Stack
-        direction="row"
-        width="700px"
-        justifyContent="center"
-        alignItems="center"
-        spacing={3}
-        mb={2}
-      >
-        <Box
-          width="40%"
-          height="50px"
-          bgcolor={purple_light}
-          display="flex"
-          justifyContent="center"
-          alignItems="center"
-          border="1px solid black"
-          borderRadius="10px"
-          boxShadow="1px 1px 1px black"
-          fontWeight="bold"
-        >
-          {subject}
-        </Box>
-        <Box
-          width="40%"
-          height="50px"
-          bgcolor={purple_light}
-          display="flex"
-          justifyContent="center"
-          alignItems="center"
-          border="1px solid black"
-          borderRadius="10px"
-          boxShadow="1px 1px 1px black"
-          fontWeight="bold"
-        >
-          {rating}
-        </Box>
-      </Stack>
-      <Box
-        width="90%"
-        minHeight="100px"
-        bgcolor={purple_light}
-        display="flex"
-        justifyContent="center"
-        alignItems="center"
-        border="1px solid black"
-        borderRadius="10px"
-        boxShadow="1px 1px 1px black"
-        fontWeight="bold"
-        flexGrow={1}
-        mb={2}
-        p={2}
-      >
-        {summary}
-      </Box>
-    </Box>
+        <Typography color={linen} mr={2}>{name}</Typography>
+        <Typography color={linen} mr={2}>{subject}</Typography>
+        <Typography color={linen}>{rating}</Typography>
+      </AccordionSummary>
+      <AccordionDetails sx={{ backgroundColor: `${purple_mid}`, borderTop: '2px solid black' }}>
+        <Typography>{summary}</Typography>
+      </AccordionDetails>
+      <AccordionActions sx={{ backgroundColor: `${purple_mid}` }}>
+        <Button><Link
+            href={link}
+            underline="none"
+            color="inherit"
+            target="_blank" // Open link in a new tab
+            rel="noopener noreferrer" // Security best practice
+            sx={{
+              textDecoration: 'none', // Remove default underline
+              '&:hover': {
+                textDecoration: 'underline', // Add underline on hover
+              },
+            }}
+          >
+            Profile
+          </Link></Button>
+      </AccordionActions>
+    </Accordion>
   );
 }

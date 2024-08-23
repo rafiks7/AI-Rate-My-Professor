@@ -180,7 +180,7 @@ export default function Home() {
               </Button>
             </Stack>
             <Grid container>
-              <Grid item xs={3}>
+              <Grid item xs={7} mr={1} mb={1}>
                 <Typography>School</Typography>
                 <Autocomplete
                   freeSolo
@@ -198,7 +198,7 @@ export default function Home() {
                   )}
                 />
               </Grid>
-              <Grid item xs={3}>
+              <Grid item xs={4}>
                 <Typography>Subject</Typography>
                 <Autocomplete
                   freeSolo
@@ -216,7 +216,7 @@ export default function Home() {
                   )}
                 />
               </Grid>
-              <Grid item xs={3}>
+              <Grid item xs={5}>
                 <Typography>Rating (1-5)</Typography>
                 <FilterTextField
                   placeholder="3.6"
@@ -226,7 +226,7 @@ export default function Home() {
                   sx={{}}
                 />
               </Grid>
-              <Grid item xs={3}>
+              <Grid item xs={5}>
                 <Typography># of results</Typography>
                 <FilterTextField
                   placeholder="4"
