@@ -250,6 +250,7 @@ export default function Home() {
           )}
           {professorsJSON.map((professor) => (
             <ProfCard
+              link={professor.link}
               name={professor.professor}
               subject={professor.subject}
               rating={professor.rating}

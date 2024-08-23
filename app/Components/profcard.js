@@ -1,12 +1,12 @@
-'use client'
+"use client";
 
-import { Box, Stack } from "@mui/material";
+import { Box, Stack, Link } from "@mui/material";
 
 const purple_light = "#B185A7";
 const purple_dark = "#8D6B94";
 
 export default function ProfCard(items) {
-  const {name, subject, rating, summary} = items
+  const { name, subject, rating, summary, link } = items;
   return (
     <Box
       width="700px"
@@ -33,7 +33,21 @@ export default function ProfCard(items) {
         fontWeight="bold"
         mb={2}
       >
-        {name}
+        <Link
+          href={link}
+          underline="none"
+          color="inherit"
+          target="_blank" // Open link in a new tab
+          rel="noopener noreferrer" // Security best practice
+          sx={{
+            textDecoration: 'none', // Remove default underline
+            '&:hover': {
+              textDecoration: 'underline', // Add underline on hover
+            },
+          }}
+        >
+          {name}
+        </Link>
       </Box>
       <Stack
         direction="row"
@@ -90,5 +104,5 @@ export default function ProfCard(items) {
         {summary}
       </Box>
     </Box>
-  )
+  );
 }
