@@ -83,7 +83,7 @@ export async function POST(req) {
   const data = await req.json();
   //create pinecone and openai instances
   const pc = new Pinecone({ apiKey: process.env.PINECONE_API_KEY });
-  const index = pc.index("rag").namespace("ns1");
+  const index = pc.index("rag").namespace("ns3");
   const openai = new OpenAI();
 
   //extract user message
@@ -143,7 +143,7 @@ export async function POST(req) {
 
   //query vector db based on filters and embedding
   const results = await index.query({
-    topK: numberFilter * 5, // Increase the number of reviews based on how many unique professors we want to find
+    topK: numberFilter*5, // Increase the number of reviews based on how many unique professors we want to find
     includeMetadata: true,
     vector: embedding.data[0].embedding,
     filter: {
@@ -183,18 +183,17 @@ export async function POST(req) {
   let resultString =
     "These are the results retrieved from a vector database about professor reviews:";
 
-  uniqueResults.forEach((match) => {
+    uniqueResults.forEach((match) => {
     resultString += `
     \n
     Professor: ${match.metadata.professor}
     School: ${match.metadata.school}
     Subject: ${match.metadata.subject}
-    Courses: ${match.metadata.courses}
-    Review: ${match.metadata.review}
     Ratings Count: ${match.metadata.ratings_count}
     Rating: ${match.metadata.rating}
     Difficulty Rating: ${match.metadata.difficulty_rating}
-    reference: ${match.metadata.link}
+    reference link: ${match.metadata.link}
+    A list of reviews from his students:\n ${match.metadata.reviews}
     \n\n
     `;
   });
