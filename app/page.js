@@ -15,7 +15,8 @@ import {
 import { useEffect, useState } from "react";
 import ProfCard from "./Components/profcard.js";
 import FilterTextField from "./Components/filtertextfield.js";
-import ExpandMoreIcon from "@mui/icons-material/ExpandMore"
+import ExpandMoreIcon from "@mui/icons-material/ExpandMore";
+import PersonSearchIcon from '@mui/icons-material/PersonSearch';
 
 
 //Colors
@@ -134,9 +135,13 @@ export default function Home() {
           mt={5}
           mb={15}
         >
-          <Typography variant="h3" sx={{ fontWeight: "bold", mb: 3 }}>
-            The Professor Finder
-          </Typography>
+          <Stack direction="row" spacing={1} alignItems="center" justifyContent="center">
+            <Typography variant="h3" sx={{ fontWeight: "bold", mb: 3 }}>
+              The Professor Finder
+            </Typography>
+            <PersonSearchIcon sx={{ fontSize: 80 }} />
+          </Stack>
+          
 
           <Stack
             direction="column"
@@ -144,11 +149,11 @@ export default function Home() {
             border="2px solid black"
             borderRadius="10px"
             p={3}
-            spacing={3}
+            // spacing={3}
             bgcolor={purple_mid}
             mb={8}
           >
-            <Stack direction="row" alignItems="center" spacing={3}>
+            <Stack direction="row" alignItems="center" spacing={3} mb={2}>
               <Box bgcolor="white" display="flex" flexGrow={1}>
                 <TextField
                   multiline
@@ -181,6 +186,16 @@ export default function Home() {
                 Search
               </Button>
             </Stack>
+            <Typography
+              mb={0}
+              textAlign="center"
+              sx={{
+                textDecoration: "underline",
+                fontWeight: "bold"
+              }}
+            >
+              Filters
+            </Typography>
             <Grid container>
               <Grid item xs={7} mr={1} mb={1}>
                 <Typography>School</Typography>
@@ -190,14 +205,16 @@ export default function Home() {
                   value={schoolFilter || ""}
                   onInputChange={(event, newValue) => setSchoolFilter(newValue)}
                   renderInput={(params) => (
-                    <TextField
-                      {...params}
-                      sx={{'& input::placeholder': {
-                        color: 'white', // Set your desired color here
-                      }}}
-                      placeholder="Stanford"
-                      inputMode="text"
-                    />
+                    <Box bgcolor="white" border="1px solid black" borderRadius="5px">
+                      <TextField
+                        {...params}
+                        sx={{'& input::placeholder': {
+                          color: 'black', // Set your desired color here
+                        }}}
+                        placeholder="Ex. Stanford"
+                        inputMode="text"
+                      />
+                    </Box>
                   )}
                 />
               </Grid>
@@ -211,33 +228,76 @@ export default function Home() {
                     setSubjectFilter(newValue)
                   }
                   renderInput={(params) => (
-                    <TextField
-                      {...params}
-                      sx={{'& input::placeholder': {
-                        color: 'white', // Set your desired color here
-                      }}}
-                      placeholder="Math"
-                      inputMode="text"
-                    />
+                    <Box bgcolor="white" border="1px solid black" borderRadius="5px">
+                      <TextField
+                        {...params}
+                        sx={{'& input::placeholder': {
+                          color: 'black', // Set your desired color here
+                        }}}
+                        placeholder="Ex. Math"
+                        inputMode="text"
+                      />
+                    </Box>
                   )}
                 />
               </Grid>
-              <Grid item xs={5}>
-                <Typography>Rating (1-5)</Typography>
-                <FilterTextField
-                sx={{'& input::placeholder': {
-                  color: 'white', // Set your desired color here
-                }}}
-                  placeholder="3.6"
-                  value={ratingFilter || ""}
-                  inputMode={"decimal"}
-                  onChange={(e) => setRatingFilter(e.target.value)}
-                  
-                />
+              <Grid item xs={5} mr={1}>
+                <Typography>Minimum Rating (1-5)</Typography>
+                <Autocomplete
+                    freeSolo
+                    value={ratingFilter || ""}
+                    onInputChange={(event, newValue) =>
+                      setRatingFilter(newValue)
+                    }
+                    renderInput={(params) => (
+                      <Box bgcolor="white" border="1px solid black" borderRadius="5px">
+                        <TextField
+                          {...params}
+                          sx={{'& input::placeholder': {
+                            color: 'black', // Set your desired color here
+                          }}}
+                          placeholder="Ex. 3.6"
+                          inputMode="decimal"
+                        />
+                      </Box>
+                    )}
+                  />
+                {/* <Typography>Minimum Rating (1-5)</Typography>
+                <Box bgcolor="white" border="1px solid black" borderRadius="5px">
+                  <FilterTextField
+                  sx={{'& input::placeholder': {
+                    color: 'black', // Set your desired color here
+                  }}}
+                    placeholder="Ex. 3.6"
+                    value={ratingFilter || ""}
+                    inputMode={"decimal"}
+                    onChange={(e) => setRatingFilter(e.target.value)}
+                    
+                  />
+                </Box> */}
               </Grid>
               <Grid item xs={5}>
-                <Typography># of results</Typography>
-                <FilterTextField
+                <Typography># of Results</Typography>
+                <Autocomplete
+                  freeSolo
+                  value={numberFilter || ""}
+                  onInputChange={(event, newValue) =>
+                    setNumberFilter(newValue)
+                  }
+                  renderInput={(params) => (
+                    <Box bgcolor="white" border="1px solid black" borderRadius="5px">
+                      <TextField
+                        {...params}
+                        sx={{'& input::placeholder': {
+                          color: 'black', // Set your desired color here
+                        }}}
+                        placeholder="Ex. 3"
+                        inputMode="numeric"
+                      />
+                    </Box>
+                  )}
+                />
+                {/* <FilterTextField
                   sx={{
                     "& input::placeholder": {
                       color: "white", // Set your desired color here
@@ -248,7 +308,7 @@ export default function Home() {
                   inputMode={"numeric"}
                   onChange={(e) => setNumberFilter(e.target.value)}
                   
-                />
+                /> */}
               </Grid>
             </Grid>
           </Stack>
