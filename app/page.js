@@ -21,8 +21,8 @@ import PersonSearchIcon from '@mui/icons-material/PersonSearch';
 
 //Colors
 const linen = "#FFF4E9";
-const purple_dark = "#8D6B94";
-const purple_mid = "#B185A7";
+const dark_blue = "#6d92b4";
+const sky_blue = "#94c5f2";
 const purple_light = "#baa4be";
 
 export default function Home() {
@@ -126,32 +126,75 @@ export default function Home() {
   // });
 
   return (
-    <Box minHeight="100vh" display="flex" bgcolor={linen}>
-      <Container width="100xw">
+    <Box
+      minHeight="100vh"
+      display="flex"
+      flexDirection="column"
+      bgcolor={linen}
+      sx={{
+        backgroundImage: 'url(https://wallpaperset.com/w/full/0/6/c/517269.jpg)',
+        backgroundSize: 'contain'
+      }}
+    >
+      {/* <Container
+        width="100xw"
+      > */}
         <Box
+          width="100vw"
+          height="100vh"
           display="flex"
           flexDirection="column"
           alignItems="center"
-          mt={5}
-          mb={15}
+          // justifyContent="center"
+          py={25}
         >
+
           <Stack direction="row" spacing={1} alignItems="center" justifyContent="center">
-            <Typography variant="h3" sx={{ fontWeight: "bold", mb: 3 }}>
+            <Typography
+              variant="h1"
+              textAlign="center"
+              sx={{
+                fontFamily: 'BlinkMacSystemFont',
+                mb: 3,
+                color: "white",
+                textShadow: "1px 1px black"
+              }}
+            >
               The Professor Finder
             </Typography>
-            <PersonSearchIcon sx={{ fontSize: 80 }} />
           </Stack>
-          
-
+        </Box>
+        <Box
+          width="100vw"
+          height="100vh"
+          bgcolor="black"
+          display="flex"
+          flexDirection="column"
+          alignItems="center"
+          p={5}
+        >
+          <Typography
+            variant="h2"
+            textAlign="center"
+            sx={{
+              fontFamily: 'BlinkMacSystemFont',
+              mt: 8,
+              mb: 4,
+              color: "white",
+            }}
+          >
+            Find The <u>Perfect</u> Professor For You
+          </Typography>
           <Stack
             direction="column"
             width="700px"
-            border="2px solid black"
+            border="none"
             borderRadius="10px"
             p={3}
             // spacing={3}
-            bgcolor={purple_mid}
+            bgcolor={sky_blue}
             mb={8}
+            boxShadow="10px 10px gray"
           >
             <Stack direction="row" alignItems="center" spacing={3} mb={2}>
               <Box bgcolor="white" display="flex" flexGrow={1}>
@@ -170,11 +213,12 @@ export default function Home() {
                 sx={{
                   height: "50px",
                   color: "black",
-                  bgcolor: purple_dark,
+                  bgcolor: dark_blue,
                   px: 3,
                   border: "1px solid black",
                   borderRadius: "100px",
                   boxShadow: "1px 1px 1px black",
+                  fontWeight: "bold",
                   "&:hover": {
                     bgcolor: linen,
                     transform: "scale(1.1)",
@@ -321,7 +365,7 @@ export default function Home() {
                 mt: 6,
               }}
             >
-              <CircularProgress size={45} sx={{ color: purple_dark }} />
+              <CircularProgress size={45} sx={{ color: dark_blue }} />
             </Box>
           )}
           {professorsJSON.map((professor) => (
@@ -335,7 +379,7 @@ export default function Home() {
             />
           ))}
         </Box>
-      </Container>
+      {/* </Container> */}
     </Box>
   );
 }

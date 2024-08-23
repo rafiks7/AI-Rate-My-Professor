@@ -67,8 +67,8 @@ export default function NavBar() {
 
   return (
     <AppBar position="static">
-      <Toolbar sx={{ bgcolor: purple_main, boxShadow: "2px 2px 2px black" }}>
-        <Box display="flex" alignItems="center" flexGrow={1}>
+      <Toolbar sx={{ bgcolor: 'black', boxShadow: "2px 2px 2px black" }}>
+        <Box display="flex" alignItems="center" flexGrow={1} bgcolor='black'>
           <a href="http://localhost:3000/">
             <Image alt="Logo" src={logo} width={50} height={50}></Image>
           </a>
@@ -76,14 +76,15 @@ export default function NavBar() {
         <SignedOut>
           <Button
             sx={{
-              border: "1px solid black",
+              border: "1px solid white",
               borderRadius: "10px",
-              color: "black",
-              bgcolor: purple_light,
+              color: "white",
+              bgcolor: "black",
               mx: 1,
               transition: "200ms",
               "&:hover": {
                 bgcolor: linen,
+                color: 'black',
                 transform: "scale(1.05)",
               },
             }}
@@ -93,14 +94,15 @@ export default function NavBar() {
           </Button>
           <Button
             sx={{
-              border: "1px solid black",
+              border: "1px solid white",
               borderRadius: "10px",
-              color: "black",
-              bgcolor: purple_light,
+              color: "white",
+              bgcolor: "black",
               mx: 1,
               transition: "200ms",
               "&:hover": {
                 bgcolor: linen,
+                color: 'black',
                 transform: "scale(1.05)",
               },
             }}
@@ -112,14 +114,15 @@ export default function NavBar() {
         <SignedIn>
           <Button
             sx={{
-              border: "1px solid black",
+              border: "1px solid white",
               borderRadius: "10px",
-              color: "black",
-              bgcolor: purple_light,
+              color: "white",
+              bgcolor: "black",
               mx: 3,
               transition: "200ms",
               "&:hover": {
                 bgcolor: linen,
+                color: 'black',
                 transform: "scale(1.05)",
               },
             }}
