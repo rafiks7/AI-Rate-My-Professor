@@ -4,20 +4,63 @@ import { Pinecone } from "@pinecone-database/pinecone";
 import OpenAI from "openai";
 
 export async function POST(req) {
-  const data = await req.json();
-  const url = data.data;
+  try {
+    // Parse the JSON body of the request
+    const data = await req.json();
+    const url = data.data;
 
-  const response = await fetch(url);
-  const html = await response.text();
+    // Fetch the URL and check for a successful response
+    let response;
+    try {
+      response = await fetch(url);
+    } catch (error) {
+      return NextResponse.json(
+        { error: `Invalid URL: ${url}` },
+        { status: 500 }
+      );
+    }
 
-  const dom = new JSDOM(html);
-  const document = dom.window.document;
+    if (!url.startsWith("https://www.ratemyprofessors")) {
+      return NextResponse.json(
+        { error: `Please enter a ratemyprofessors URL` },
+        { status: 500 }
+      );
+    }
 
-  const profReview = await scrape(document, url);
+    // Get the HTML text from the response
 
-  await load(profReview);
+    const html = await response.text();
 
-  return new NextResponse(profReview);
+    // Parse the HTML with JSDOM
+
+    const dom = new JSDOM(html);
+
+    const document = dom.window.document;
+
+    // Scrape data from the document
+
+    const profReview = await scrape(document, url);
+
+    // Load the scraped data (assuming load is a function you defined)
+    try {
+      await load(profReview);
+    } catch (error) {
+      console.error("Failed to add professor to database:", error);
+      return NextResponse.json(
+        { error: `Failed to add professor to database: ${error.message}` },
+        { status: 500 }
+      );
+    }
+    // Return the response
+    return new NextResponse(profReview);
+  } catch (error) {
+    // Handle any errors that occurred during the process
+    console.error(error);
+    return NextResponse.json(
+      { error: "An error occurred while processing your request." },
+      { status: 500 }
+    );
+  }
 }
 
 const scrape = async (document, url) => {
@@ -47,8 +90,7 @@ const scrape = async (document, url) => {
 
   const subject = document
     .querySelector(".TeacherDepartment__StyledDepartmentLink-fl79e8-0")
-    ?.textContent
-    ?.replace(/\s*department/i, '')
+    ?.textContent?.replace(/\s*department/i, "")
     ?.trim();
 
   let difficulty = document
@@ -64,16 +106,18 @@ const scrape = async (document, url) => {
     ? parseInt(ratingsCount.replace(/[^\d]/g, ""), 10)
     : null;
 
-    const reviews = document.querySelectorAll(".Comments__StyledComments-dzzyvm-0");
-    let reviewsArray = [];
-    
-    // Iterate over the NodeList and collect reviews
-    reviews.forEach((review, index) => {
-      if (index < 15) { // Limit to the first 20 reviews
-        reviewsArray.push(review.textContent?.trim() || "");
-      }
-    });
-    
+  const reviews = document.querySelectorAll(
+    ".Comments__StyledComments-dzzyvm-0"
+  );
+  let reviewsArray = [];
+
+  // Iterate over the NodeList and collect reviews
+  reviews.forEach((review, index) => {
+    if (index < 15) {
+      // Limit to the first 20 reviews
+      reviewsArray.push(review.textContent?.trim() || "");
+    }
+  });
 
   const profReview = {
     professor: profName,
@@ -97,12 +141,16 @@ const load = async (profReview) => {
 
   const index = pc.index("rag");
 
+  const fetchResult = await index.namespace('ns3').fetch([`${profReview["professor"]}-0`]) || null;
+
+  if (Object.keys(fetchResult.records).length > 0) {
+    throw new Error("Review already exists in the database");
+  } 
+
   const client = new OpenAI();
 
   const reviews = profReview["reviews"];
-  const combinedReviews = reviews.join('\n\n');
-  console.log("combinedReviews", combinedReviews);
-
+  const combinedReviews = reviews.join("\n\n");
 
   const response = await client.embeddings.create({
     input: reviews,
@@ -128,7 +176,7 @@ const load = async (profReview) => {
     },
   }]
     */
-  
+
   const processed_data = await Promise.all(
     reviews.map(async (review, index) => {
       const response = await client.embeddings.create({
@@ -152,9 +200,11 @@ const load = async (profReview) => {
         },
       };
     })
-    
   );
 
-
-  await index.namespace("ns3").upsert(processed_data);
+  try {
+    await index.namespace("ns3").upsert(processed_data);
+  } catch (error) {
+    console.error("Request to add data to Pinecone failed: ", error);
+  };
 };

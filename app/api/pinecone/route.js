@@ -38,7 +38,7 @@ export async function POST(req) {
     "schools": uniqueSchools
   };
 
-  console.log('respoen from server side:', response)
+  //console.log('respoen from server side:', response)
 
   return new NextResponse(JSON.stringify(response));
 }
