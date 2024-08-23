@@ -15,6 +15,7 @@ import {
 import { useEffect, useState } from "react";
 import ProfCard from "./Components/profcard.js";
 import ExpandMoreIcon from "@mui/icons-material/ExpandMore";
+import PersonSearchIcon from '@mui/icons-material/PersonSearch';;
 import { createTheme, ThemeProvider } from "@mui/material/styles";
 
 //Colors
@@ -224,9 +225,13 @@ export default function Home() {
           mt={5}
           mb={15}
         >
-          <Typography variant="h3" sx={{ fontWeight: "bold", mb: 3 }}>
-            The Professor Finder
-          </Typography>
+          <Stack direction="row" spacing={1} alignItems="center" justifyContent="center">
+            <Typography variant="h3" sx={{ fontWeight: "bold", mb: 3 }}>
+              The Professor Finder
+            </Typography>
+            <PersonSearchIcon sx={{ fontSize: 80 }} />
+          </Stack>
+          
 
           <Stack
             direction="column"
@@ -234,11 +239,11 @@ export default function Home() {
             border="2px solid black"
             borderRadius="10px"
             p={3}
-            spacing={3}
+            // spacing={3}
             bgcolor={purple_mid}
             mb={8}
           >
-            <Stack direction="row" alignItems="center" spacing={3}>
+            <Stack direction="row" alignItems="center" spacing={3} mb={2}>
               <Box bgcolor="white" display="flex" flexGrow={1}>
                 <TextField
                   multiline
@@ -271,6 +276,16 @@ export default function Home() {
                 Search
               </Button>
             </Stack>
+            <Typography
+              mb={0}
+              textAlign="center"
+              sx={{
+                textDecoration: "underline",
+                fontWeight: "bold"
+              }}
+            >
+              Filters
+            </Typography>
             <Grid container>
               <Grid item xs={7} mr={1} mb={1}>
                 <Typography>School</Typography>
@@ -279,18 +294,21 @@ export default function Home() {
                   value={schoolFilter || ""}
                   onInputChange={handleSchoolFilter}
                   renderInput={(params) => (
+                    <Box bgcolor="white" border="1px solid black" borderRadius="5px">
+
                     <ThemeProvider theme={textfieldTheme}>
                       <TextField
-                        {...params}
-                        sx={{
+                          {...params}
+                          sx={{
                           "& input::placeholder": {
-                            color: "white", // Set your desired color here
-                          },
+                              color: "black", // Set your desired color here
+                            },
                         }}
-                        placeholder="Choose a school from the list"
-                        inputMode="text"
-                      />
+                          placeholder="Ex. Choose a school from the list"
+                          inputMode="text"
+                        />
                     </ThemeProvider>
+                    </Box>
                   )}
                 />
               </Grid>
@@ -301,24 +319,28 @@ export default function Home() {
                   value={subjectFilter || ""}
                   onInputChange={handleSubjectFilter}
                   renderInput={(params) => (
+                    <Box bgcolor="white" border="1px solid black" borderRadius="5px">
+
                     <ThemeProvider theme={textfieldTheme}>
                       <TextField
-                        {...params}
-                        sx={{
+                          {...params}
+                          sx={{
                           "& input::placeholder": {
-                            color: "white", // Set your desired color here
-                          },
+                              color: "black", // Set your desired color here
+                            },
                         }}
-                        placeholder="Choose a subject from the list"
-                        inputMode="text"
-                      />
+                          placeholder="Ex. Choose a subject from the list"
+                          inputMode="text"
+                        />
                     </ThemeProvider>
+                    </Box>
                   )}
                 />
               </Grid>
-              <Grid item xs={5}>
-                <Typography>Rating (1-5)</Typography>
+              <Grid item xs={5} mr={1}>
+                <Typography>Minimum Rating (1-5)</Typography>
                 <ThemeProvider theme={textfieldTheme}>
+                <Box bgcolor="white" border="1px solid black" borderRadius="5px">
                   <TextField
                     error={ratingError}
                     helperText={
@@ -328,19 +350,21 @@ export default function Home() {
                     } // Optional helper text
                     sx={{
                       "& input::placeholder": {
-                        color: "white",
+                        color: "black",
                       },
                     }}
-                    placeholder="3.6"
+                    placeholder="Ex: 3.6"
                     value={ratingFilter || ""}
                     inputMode={"decimal"}
                     onChange={handleRatingFilter}
                   />
+                  </Box>
                 </ThemeProvider>
               </Grid>
               <Grid item xs={5}>
                 <Typography># of results</Typography>
                 <ThemeProvider theme={textfieldTheme}>
+                <Box bgcolor="white" border="1px solid black" borderRadius="5px">
                   <TextField
                     error={numberError}
                     helperText={
@@ -350,14 +374,15 @@ export default function Home() {
                     } // Optional helper text
                     sx={{
                       "& input::placeholder": {
-                        color: "white", // Set your desired color here
+                        color: "blkac", // Set your desired color here
                       },
                     }}
-                    placeholder="3"
+                    placeholder="Ex: 3"
                     value={numberFilter || ""}
                     inputMode={"numeric"}
                     onChange={(e) => handleNumberFilter(e)}
                   />
+                  </Box>
                 </ThemeProvider>
               </Grid>
             </Grid>
