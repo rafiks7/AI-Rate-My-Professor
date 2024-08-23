@@ -33,13 +33,12 @@ export async function POST(req) {
 
   //console.log('schools', uniqueSchools); 
 
-  const respone ={
-    'subjects': uniqueSubjects,
-    'schools': uniqueSchools
+  const response ={
+    "subjects": uniqueSubjects,
+    "schools": uniqueSchools
   };
 
-  console.log('respoen from server side:', respone)
+  console.log('respoen from server side:', response)
 
-
-  return new NextResponse(respone);
+  return new NextResponse(JSON.stringify(response));
 }

@@ -10,6 +10,7 @@ import {
   CircularProgress,
   Grid,
   Item,
+  Autocomplete,
 } from "@mui/material";
 import { useEffect, useState } from "react";
 import ProfCard from "./Components/profcard.js";
@@ -39,11 +40,13 @@ export default function Home() {
         headers: {
           "Content-Type": "application/json",
         },
-        body: JSON.stringify({ message: "hello" }), 
+        body: JSON.stringify({ message: "hello" }),
       }).then(async (response) => {
-        console.log('response from client side:', response)
+        console.log("response from client side:", response);
         const data = await response.json();
         console.log("client metaData:", data);
+        setSchools(data.schools);
+        setSubjects(data.subjects);
       });
     } catch (error) {
       console.error("error in fetching data: ", error);
@@ -179,27 +182,45 @@ export default function Home() {
             <Grid container>
               <Grid item xs={3}>
                 <Typography>School</Typography>
-                <FilterTextField
-                  placeholder="Stanford"
-                  value={schoolFilter || ''}
-                  inputMode={"text"}
-                  onChange={(e) => setSchoolFilter(e.target.value)}
+                <Autocomplete
+                  freeSolo
+                  options={schools}
+                  value={schoolFilter || ""}
+                  onInputChange={(event, newValue) =>
+                    setSchoolFilter(newValue)
+                  }
+                  renderInput={(params) => (
+                    <TextField
+                      {...params}
+                      placeholder="Stanford"
+                      inputMode="text"
+                    />
+                  )}
                 />
               </Grid>
               <Grid item xs={3}>
                 <Typography>Subject</Typography>
-                <FilterTextField
-                  placeholder="Computer Science"
-                  value={subjectFilter || ''}
-                  inputMode={"text"}
-                  onChange={(e) => setSubjectFilter(e.target.value)}
+                <Autocomplete
+                  freeSolo
+                  options={subjects}
+                  value={subjectFilter || ""}
+                  onInputChange={(event, newValue) =>
+                    setSubjectFilter(newValue)
+                  }
+                  renderInput={(params) => (
+                    <TextField
+                      {...params}
+                      placeholder="Math"
+                      inputMode="text"
+                    />
+                  )}
                 />
               </Grid>
               <Grid item xs={3}>
                 <Typography>Rating (1-5)</Typography>
                 <FilterTextField
                   placeholder="3.6"
-                  value={ratingFilter || ''}
+                  value={ratingFilter || ""}
                   inputMode={"decimal"}
                   onChange={(e) => setRatingFilter(e.target.value)}
                 />
@@ -208,7 +229,7 @@ export default function Home() {
                 <Typography># of results</Typography>
                 <FilterTextField
                   placeholder="4"
-                  value={numberFilter || ''}
+                  value={numberFilter || ""}
                   inputMode={"numeric"}
                   onChange={(e) => setNumberFilter(e.target.value)}
                 />
