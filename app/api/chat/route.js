@@ -183,7 +183,7 @@ export async function POST(req) {
   let resultString =
     "These are the results retrieved from a vector database about professor reviews:";
 
-  results['matches'].forEach((match) => {
+    uniqueResults.forEach((match) => {
     resultString += `
     \n
     Professor: ${match.metadata.professor}
@@ -192,6 +192,7 @@ export async function POST(req) {
     Ratings Count: ${match.metadata.ratings_count}
     Rating: ${match.metadata.rating}
     Difficulty Rating: ${match.metadata.difficulty_rating}
+    reference link: ${match.metadata.link}
     A list of reviews from his students:\n ${match.metadata.reviews}
     \n\n
     `;
