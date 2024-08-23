@@ -186,12 +186,13 @@ export default function Home() {
                   freeSolo
                   options={schools}
                   value={schoolFilter || ""}
-                  onInputChange={(event, newValue) =>
-                    setSchoolFilter(newValue)
-                  }
+                  onInputChange={(event, newValue) => setSchoolFilter(newValue)}
                   renderInput={(params) => (
                     <TextField
                       {...params}
+                      sx={{'& input::placeholder': {
+                        color: 'white', // Set your desired color here
+                      }}}
                       placeholder="Stanford"
                       inputMode="text"
                     />
@@ -210,6 +211,9 @@ export default function Home() {
                   renderInput={(params) => (
                     <TextField
                       {...params}
+                      sx={{'& input::placeholder': {
+                        color: 'white', // Set your desired color here
+                      }}}
                       placeholder="Math"
                       inputMode="text"
                     />
@@ -219,21 +223,29 @@ export default function Home() {
               <Grid item xs={5}>
                 <Typography>Rating (1-5)</Typography>
                 <FilterTextField
+                sx={{'& input::placeholder': {
+                  color: 'white', // Set your desired color here
+                }}}
                   placeholder="3.6"
                   value={ratingFilter || ""}
                   inputMode={"decimal"}
                   onChange={(e) => setRatingFilter(e.target.value)}
-                  sx={{}}
+                  
                 />
               </Grid>
               <Grid item xs={5}>
                 <Typography># of results</Typography>
                 <FilterTextField
+                  sx={{
+                    "& input::placeholder": {
+                      color: "white", // Set your desired color here
+                    },
+                  }}
                   placeholder="4"
                   value={numberFilter || ""}
                   inputMode={"numeric"}
                   onChange={(e) => setNumberFilter(e.target.value)}
-                  sx={{}}
+                  
                 />
               </Grid>
             </Grid>
