@@ -6,16 +6,16 @@ export async function POST(req) {
   const index = pc.index("rag").namespace("ns3");
 
   const results = await index.listPaginated();
-  //console.log('results', results);
+  // console.log('results', results);
 
   const listIds = await results["vectors"];
-  //console.log('listIds', listIds);
+  // console.log('listIds', listIds);
 
   const IDs = listIds.map((id) => id.id);
-  //console.log('IDs', IDs);
+  // console.log('IDs', IDs);
 
   const fetchResult = await index.fetch(IDs);
-  //console.log("fetchResult", fetchResult);
+  // console.log("fetchResult", fetchResult);
 
   const records = await fetchResult["records"];
   //console.log("Records", records);
