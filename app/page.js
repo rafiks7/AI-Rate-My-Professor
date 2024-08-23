@@ -15,7 +15,7 @@ import {
 import { useEffect, useState } from "react";
 import ProfCard from "./Components/profcard.js";
 import ExpandMoreIcon from "@mui/icons-material/ExpandMore";
-import PersonSearchIcon from '@mui/icons-material/PersonSearch';;
+import PersonSearchIcon from "@mui/icons-material/PersonSearch";
 import { createTheme, ThemeProvider } from "@mui/material/styles";
 
 //Colors
@@ -30,7 +30,7 @@ const textfieldTheme = createTheme({
       styleOverrides: {
         root: {
           // declare color root vars to use later
-          "--TextField-brandBorderColor": purple_dark,
+          "--TextField-brandBorderColor": purple_light,
           "--TextField-brandBorderHoverColor": purple_light,
           "--TextField-brandBorderFocusedColor": purple_light,
           // use color for text color
@@ -217,244 +217,241 @@ export default function Home() {
 
   return (
     <Box
-      minHeight="100vh"
+      width="100vw"
+      height="auto"
       display="flex"
       flexDirection="column"
-      bgcolor={linen}
-      sx={{
-        backgroundImage: 'url(https://wallpaperset.com/w/full/0/6/c/517269.jpg)',
-        backgroundSize: 'contain'
-      }}
+      alignItems="center"
+      py={2}
+      px={1}
     >
-      {/* <Container
-        width="100xw"
-      > */}
-        <Box
-          width="100vw"
-          height="100vh"
-          display="flex"
-          flexDirection="column"
-          alignItems="center"
-          // justifyContent="center"
-          py={25}
+      <Stack
+        direction="row"
+        spacing={1}
+        alignItems="center"
+        justifyContent="center"
+        mb={2}
+      >
+        <Typography
+          variant="h4"
+          textAlign="center"
+          sx={{
+            fontFamily: "BlinkMacSystemFont",
+            color: "white",
+            textShadow: "1px 1px black",
+            fontSize: "1.5rem",
+          }}
         >
+          The Professor Finder
+        </Typography>
+      </Stack>
 
-          <Stack direction="row" spacing={1} alignItems="center" justifyContent="center">
-            <Typography
-              variant="h1"
-              textAlign="center"
-              sx={{
-                fontFamily: 'BlinkMacSystemFont',
-                mb: 3,
-                color: "white",
-                textShadow: "1px 1px black"
-              }}
-            >
-              The Professor Finder
-            </Typography>
-          </Stack>
-        </Box>
-        <Box
-          width="100vw"
-          height="100vh"
-          bgcolor="black"
-          display="flex"
-          flexDirection="column"
-          alignItems="center"
-          p={5}
+      <Box
+        width="100%"
+        display="flex"
+        flexDirection="column"
+        alignItems="center"
+        p={2}
+      >
+        <Typography
+          variant="h5"
+          textAlign="center"
+          sx={{
+            fontFamily: "BlinkMacSystemFont",
+            color: "white",
+            fontSize: "1.25rem",
+            mb: 2,
+          }}
         >
-          <Typography
-            variant="h2"
-            textAlign="center"
-            sx={{
-              fontFamily: 'BlinkMacSystemFont',
-              mt: 8,
-              mb: 4,
-              color: "white",
-            }}
-          >
-            Find The <u>Perfect</u> Professor For You
-          </Typography>
-          <Stack
-            direction="column"
-            width="700px"
-            border="none"
-            borderRadius="10px"
-            p={3}
-            // spacing={3}
-            bgcolor={sky_blue}
-            mb={8}
-            boxShadow="10px 10px gray"
-          >
-            <Stack direction="row" alignItems="center" spacing={3} mb={2}>
-              <Box bgcolor="white" display="flex" flexGrow={1}>
-                <TextField
-                  multiline
-                  rows={3}
-                  placeholder="Please describe the type of professor you are looking for."
-                  value={message}
-                  onChange={(e) => setMessage(e.target.value)}
-                  variant="filled"
-                  color="secondary"
-                  fullWidth
-                />
-              </Box>
+          Find The <u>Perfect</u> Professor For You
+        </Typography>
+        <Stack
+          direction="column"
+          width="90%"
+          maxWidth="600px"
+          border="none"
+          borderRadius="10px"
+          p={2}
+          bgcolor={sky_blue}
+          mb={4}
+          boxShadow="2px 2px gray"
+        >
+          <Stack direction="column" spacing={2}>
+            <Box
+              bgcolor="white"
+              display="flex"
+              flexDirection="column"
+              p={1}
+              borderRadius="5px"
+            >
+              <TextField
+                multiline
+                rows={3}
+                placeholder="Please describe the type of professor you are looking for."
+                value={message}
+                onChange={(e) => setMessage(e.target.value)}
+                variant="filled"
+                color="secondary"
+                fullWidth
+                sx={{ mb: 1 }}
+              />
               <Button
                 sx={{
-                  height: "50px",
+                  height: "40px",
                   color: "black",
                   bgcolor: dark_blue,
-                  px: 3,
+                  px: 2,
                   border: "1px solid black",
                   borderRadius: "100px",
                   boxShadow: "1px 1px 1px black",
                   fontWeight: "bold",
                   "&:hover": {
                     bgcolor: linen,
-                    transform: "scale(1.1)",
+                    transform: "scale(1.05)",
                   },
                 }}
                 onClick={sendMessage}
-                onChange={(e) => setMessage(e.target.value)}
               >
                 Search
               </Button>
-            </Stack>
+            </Box>
+
             <Typography
-              mb={0}
               textAlign="center"
               sx={{
                 textDecoration: "underline",
-                fontWeight: "bold"
+                fontWeight: "bold",
+                mb: 1,
               }}
             >
               Filters
             </Typography>
-            <Grid container>
-              <Grid item xs={7} mr={1} mb={1}>
+
+            <Grid container spacing={2}>
+              <Grid item xs={12} sm={6}>
                 <Typography>School</Typography>
                 <Autocomplete
                   options={schools}
                   value={schoolFilter || ""}
                   onInputChange={handleSchoolFilter}
                   renderInput={(params) => (
-                    <Box bgcolor="white" border="1px solid black" borderRadius="5px">
-
-                    <ThemeProvider theme={textfieldTheme}>
-                      <TextField
+                    <Box
+                      bgcolor="white"
+                      border="1px solid black"
+                      borderRadius="5px"
+                    >
+                      <ThemeProvider theme={textfieldTheme}>
+                        <TextField
                           {...params}
-                          sx={{
-                          "& input::placeholder": {
-                              color: "black", // Set your desired color here
-                            },
-                        }}
                           placeholder="Ex. Choose a school from the list"
                           inputMode="text"
+                          sx={{ "& input::placeholder": { color: "black" } }}
                         />
-                    </ThemeProvider>
+                      </ThemeProvider>
                     </Box>
                   )}
                 />
               </Grid>
-              <Grid item xs={4}>
+              <Grid item xs={12} sm={6}>
                 <Typography>Subject</Typography>
                 <Autocomplete
                   options={subjects}
                   value={subjectFilter || ""}
                   onInputChange={handleSubjectFilter}
                   renderInput={(params) => (
-                    <Box bgcolor="white" border="1px solid black" borderRadius="5px">
-
-                    <ThemeProvider theme={textfieldTheme}>
-                      <TextField
+                    <Box
+                      bgcolor="white"
+                      border="1px solid black"
+                      borderRadius="5px"
+                    >
+                      <ThemeProvider theme={textfieldTheme}>
+                        <TextField
                           {...params}
-                          sx={{
-                          "& input::placeholder": {
-                              color: "black", // Set your desired color here
-                            },
-                        }}
                           placeholder="Ex. Choose a subject from the list"
                           inputMode="text"
+                          sx={{ "& input::placeholder": { color: "black" } }}
                         />
-                    </ThemeProvider>
+                      </ThemeProvider>
                     </Box>
                   )}
                 />
               </Grid>
-              <Grid item xs={5} mr={1}>
+              <Grid item xs={6} sm={4}>
                 <Typography>Minimum Rating (1-5)</Typography>
                 <ThemeProvider theme={textfieldTheme}>
-                <Box bgcolor="white" border="1px solid black" borderRadius="5px">
-                  <TextField
-                    error={ratingError}
-                    helperText={
-                      ratingError
-                        ? "Invalid rating. Please enter a number between 1 and 5."
-                        : ""
-                    } // Optional helper text
-                    sx={{
-                      "& input::placeholder": {
-                        color: "black",
-                      },
-                    }}
-                    placeholder="Ex: 3.6"
-                    value={ratingFilter || ""}
-                    inputMode={"decimal"}
-                    onChange={handleRatingFilter}
-                  />
+                  <Box
+                    bgcolor="white"
+                    border="1px solid black"
+                    borderRadius="5px"
+                  >
+                    <TextField
+                      error={ratingError}
+                      helperText={
+                        ratingError
+                          ? "Invalid rating. Please enter a number between 1 and 5."
+                          : ""
+                      }
+                      placeholder="Ex: 3.6"
+                      value={ratingFilter || ""}
+                      inputMode="decimal"
+                      onChange={handleRatingFilter}
+                      sx={{ "& input::placeholder": { color: "black" } }}
+                    />
                   </Box>
                 </ThemeProvider>
               </Grid>
-              <Grid item xs={5}>
+              <Grid item xs={6} sm={4}>
                 <Typography># of results</Typography>
                 <ThemeProvider theme={textfieldTheme}>
-                <Box bgcolor="white" border="1px solid black" borderRadius="5px">
-                  <TextField
-                    error={numberError}
-                    helperText={
-                      numberError
-                        ? "Invalid number. Please enter a number between 1 and 10."
-                        : ""
-                    } // Optional helper text
-                    sx={{
-                      "& input::placeholder": {
-                        color: "blkac", // Set your desired color here
-                      },
-                    }}
-                    placeholder="Ex: 3"
-                    value={numberFilter || ""}
-                    inputMode={"numeric"}
-                    onChange={(e) => handleNumberFilter(e)}
-                  />
+                  <Box
+                    bgcolor="white"
+                    border="1px solid black"
+                    borderRadius="5px"
+                  >
+                    <TextField
+                      error={numberError}
+                      helperText={
+                        numberError
+                          ? "Invalid number. Please enter a number between 1 and 10."
+                          : ""
+                      }
+                      placeholder="Ex: 3"
+                      value={numberFilter || ""}
+                      inputMode="numeric"
+                      onChange={handleNumberFilter}
+                      sx={{ "& input::placeholder": { color: "black" } }}
+                    />
                   </Box>
                 </ThemeProvider>
               </Grid>
             </Grid>
           </Stack>
-          {loading && (
-            <Box
-              sx={{
-                display: "flex",
-                justifyContent: "center",
-                alignItems: "center",
-                mt: 6,
-              }}
-            >
-              <CircularProgress size={45} sx={{ color: dark_blue }} />
-            </Box>
-          )}
-          {professorsJSON.map((professor) => (
-            <ProfCard
-              key={professor.professor}
-              link={professor.link}
-              name={professor.professor}
-              subject={professor.subject}
-              rating={professor.rating}
-              summary={professor.summary}
-            />
-          ))}
-        </Box>
-      {/* </Container> */}
+        </Stack>
+
+        {loading && (
+          <Box
+            sx={{
+              display: "flex",
+              justifyContent: "center",
+              alignItems: "center",
+              mt: 3,
+            }}
+          >
+            <CircularProgress size={35} sx={{ color: dark_blue }} />
+          </Box>
+        )}
+
+        {professorsJSON.map((professor) => (
+          <ProfCard
+            key={professor.professor}
+            link={professor.link}
+            name={professor.professor}
+            subject={professor.subject}
+            rating={professor.rating}
+            summary={professor.summary}
+          />
+        ))}
+      </Box>
     </Box>
   );
 }
