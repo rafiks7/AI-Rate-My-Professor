@@ -99,18 +99,18 @@ export default function NavBar() {
         </Toolbar>
 
         <Dialog open={dialog} onClose={() => setDialog(false)}>
-          <Box p={2}>
-            <Typography variant="h4">Add Professor</Typography>
-            <Box mt={2}>
+          <Box width={"450px"} flexDirection="column"  alignItems={"center"} justifyContent={"center"} flex={"display"} p={2}>
+            <Typography align="center" variant="h4">Add Professor</Typography>
+            <Box mt={2} width={"100%"}>
               <TextField
                 fullWidth
-                label="URL"
+                label="URL (ratemyprofessor.com)"
                 variant="outlined"
                 value={input}
                 onChange={(e) => setInput(e.target.value)}
               />
             </Box>
-            <Box mt={2} display="flex" justifyContent="flex-end">
+            <Box mt={2} width={"100%"} display="flex" justifyContent="flex-end">
               <Button
                 variant="contained"
                 color="primary"
