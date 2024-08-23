@@ -69,7 +69,7 @@ const scrape = async (document, url) => {
     
     // Iterate over the NodeList and collect reviews
     reviews.forEach((review, index) => {
-      if (index < 10) { // Limit to the first 10 reviews
+      if (index < 15) { // Limit to the first 20 reviews
         reviewsArray.push(review.textContent?.trim() || "");
       }
     });
@@ -100,6 +100,9 @@ const load = async (profReview) => {
   const client = new OpenAI();
 
   const reviews = profReview["reviews"];
+  const combinedReviews = reviews.join('\n\n');
+  console.log("combinedReviews", combinedReviews);
+
 
   const response = await client.embeddings.create({
     input: reviews,
@@ -108,6 +111,7 @@ const load = async (profReview) => {
 
   const embedding = response.data[0].embedding;
 
+  /*
   const processed_data = [{
     values: embedding,
     id: profReview["professor"],
@@ -123,10 +127,8 @@ const load = async (profReview) => {
       link: profReview["link"],
     },
   }]
-
-
-
-  /*
+    */
+  
   const processed_data = await Promise.all(
     reviews.map(async (review, index) => {
       const response = await client.embeddings.create({
@@ -139,7 +141,7 @@ const load = async (profReview) => {
         id: `${profReview["professor"]}-${index}`,
         metadata: {
           professor: profReview["professor"],
-          review: review,
+          reviews: combinedReviews,
           school: profReview["school"],
           subject: profReview["subject"],
           courses: profReview["courses"],
@@ -152,7 +154,7 @@ const load = async (profReview) => {
     })
     
   );
-*/
 
-  await index.namespace("ns2").upsert(processed_data);
+
+  await index.namespace("ns3").upsert(processed_data);
 };
