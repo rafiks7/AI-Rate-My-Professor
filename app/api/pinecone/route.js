@@ -3,7 +3,7 @@ import { NextResponse } from "next/server";
 
 export async function POST(req) {
   const pc = new Pinecone({ apiKey: process.env.PINECONE_API_KEY });
-  const index = pc.index("rag").namespace("ns2");
+  const index = pc.index("rag").namespace("ns3");
 
   const results = await index.listPaginated();
   //console.log('results', results);
