@@ -101,6 +101,32 @@ const load = async (profReview) => {
 
   const reviews = profReview["reviews"];
 
+  const response = await client.embeddings.create({
+    input: reviews,
+    model: "text-embedding-3-small",
+  });
+
+  const embedding = response.data[0].embedding;
+
+  const processed_data = [{
+    values: embedding,
+    id: profReview["professor"],
+    metadata: {
+      professor: profReview["professor"],
+      reviews: reviews,
+      school: profReview["school"],
+      subject: profReview["subject"],
+      courses: profReview["courses"],
+      rating: profReview["rating"],
+      ratings_count: profReview["ratings_count"],
+      difficulty_rating: profReview["difficulty_rating"],
+      link: profReview["link"],
+    },
+  }]
+
+
+
+  /*
   const processed_data = await Promise.all(
     reviews.map(async (review, index) => {
       const response = await client.embeddings.create({
@@ -124,7 +150,9 @@ const load = async (profReview) => {
         },
       };
     })
+    
   );
+*/
 
-  await index.namespace("ns1").upsert(processed_data);
+  await index.namespace("ns2").upsert(processed_data);
 };
