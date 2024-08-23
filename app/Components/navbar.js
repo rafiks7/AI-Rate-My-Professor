@@ -38,7 +38,7 @@ export default function NavBar() {
       <AppBar position="static">
         <Toolbar sx={{ bgcolor: purple_main, boxShadow: "2px 2px 2px black"}}>
           <Box display="flex" alignItems="center" flexGrow={1}>
-            <a href="http://localhost:3000/"><Image src={logo} width={50} height={50}></Image></a>
+            <a href="http://localhost:3000/"><Image alt="Logo" src={logo} width={50} height={50}></Image></a>
           </Box>
           <SignedOut>
             <Button

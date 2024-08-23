@@ -223,6 +223,7 @@ export default function Home() {
                   value={ratingFilter || ""}
                   inputMode={"decimal"}
                   onChange={(e) => setRatingFilter(e.target.value)}
+                  sx={{}}
                 />
               </Grid>
               <Grid item xs={3}>
@@ -232,6 +233,7 @@ export default function Home() {
                   value={numberFilter || ""}
                   inputMode={"numeric"}
                   onChange={(e) => setNumberFilter(e.target.value)}
+                  sx={{}}
                 />
               </Grid>
             </Grid>
