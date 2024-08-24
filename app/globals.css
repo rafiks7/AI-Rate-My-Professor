@@ -4,6 +4,10 @@
   margin: 0;
 }
 
+#searchBox {
+  background: linear-gradient(60deg, #00001a, #000367);
+}
+
 @media (prefers-reduced-motion: no-preference) {
   @keyframes entranceTitle {
     from {opacity: 0; transform: translateX(-50px);}
