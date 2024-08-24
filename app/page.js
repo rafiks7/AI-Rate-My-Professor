@@ -25,6 +25,8 @@ const linen = "#FFF4E9";
 const dark_blue = "#6d92b4";
 const sky_blue = "#94c5f2";
 const light_blue = "#cae2f9";
+const galaxy_blue = "#00023d";
+const navy_blue = "#000367";
 
 const textfieldTheme = createTheme({
   components: {
@@ -326,7 +328,6 @@ export default function Home() {
         <Box
           id="searchBox"
           width="100vw"
-          bgcolor="#00023d"
           display="flex"
           flexDirection="column"
           alignItems="center"
