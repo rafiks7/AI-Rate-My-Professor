@@ -19,9 +19,12 @@ export default function CreateAccountPage() {
       display="flex"
       flexDirection="column"
       alignItems="center"
-      bgcolor={linen}
+      sx={{
+        backgroundImage: 'url(https://wallpaperset.com/w/full/0/6/c/517269.jpg)',
+        backgroundSize: 'contain',
+      }}
     >
-      <Box mt={10}>
+      <Box mt={10} bgcolor="black" borderRadius="12px" boxShadow="4px 4px 4px black">
         <SignUp />
       </Box>
     </Box>
