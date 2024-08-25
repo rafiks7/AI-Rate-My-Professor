@@ -69,7 +69,7 @@ export default function NavBar() {
     <AppBar position="fixed">
       <Toolbar sx={{ bgcolor: 'black', boxShadow: "2px 2px 2px black" }}>
         <Box display="flex" alignItems="center" flexGrow={1} bgcolor='black'>
-          <a href="https://vercel.com/rafik-shukrallas-projects/ai-rate-my-professor">
+          <a href="https://ai-rate-my-professor-lemon.vercel.app">
             <Image alt="Logo" src={logo} width={50} height={50}></Image>
           </a>
         </Box>
