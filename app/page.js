@@ -30,7 +30,7 @@ const textfieldTheme = createTheme({
       styleOverrides: {
         root: {
           // declare color root vars to use later
-          "--TextField-brandBorderColor": purple_dark,
+          "--TextField-brandBorderColor": purple_light,
           "--TextField-brandBorderHoverColor": purple_light,
           "--TextField-brandBorderFocusedColor": purple_light,
           // use color for text color
