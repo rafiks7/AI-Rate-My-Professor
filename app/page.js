@@ -17,12 +17,16 @@ import ProfCard from "./Components/profcard.js";
 import ExpandMoreIcon from "@mui/icons-material/ExpandMore";
 import PersonSearchIcon from '@mui/icons-material/PersonSearch';;
 import { createTheme, ThemeProvider } from "@mui/material/styles";
+import { SignedIn, SignedOut } from "@clerk/nextjs";
+import "./globals.css";
 
 //Colors
 const linen = "#FFF4E9";
 const dark_blue = "#6d92b4";
 const sky_blue = "#94c5f2";
-const purple_light = "#baa4be";
+const light_blue = "#cae2f9";
+const galaxy_blue = "#00023d";
+const navy_blue = "#000367";
 
 const textfieldTheme = createTheme({
   components: {
@@ -30,12 +34,12 @@ const textfieldTheme = createTheme({
       styleOverrides: {
         root: {
           // declare color root vars to use later
-          "--TextField-brandBorderColor": purple_light,
-          "--TextField-brandBorderHoverColor": purple_light,
-          "--TextField-brandBorderFocusedColor": purple_light,
+          "--TextField-brandBorderColor": dark_blue,
+          "--TextField-brandBorderHoverColor": light_blue,
+          "--TextField-brandBorderFocusedColor": light_blue,
           // use color for text color
           "& .MuiInputBase-input": {
-            color: linen,
+            color: "black",
           },
           // color for border, hover, and focus
           "& .MuiOutlinedInput-root": {
@@ -124,39 +128,6 @@ export default function Home() {
     }
   };
 
-  // const reader = response.body.getReader();
-  // const decoder = new TextDecoder();
-
-  // let result = "";
-
-  // return reader.read().then(function processText({ done, value }) {
-  //   if (done) {
-  //     return result;
-  //   }
-
-  //   const text = decoder.decode(value || new Uint8Array(), {
-  //     stream: true,
-  //   });
-
-  //   setMessages((messages) => {
-  //     let lastMessage = messages[messages.length - 1];
-  //     let otherMessages = messages.slice(0, messages.length - 1);
-
-  //     console.log("lastMessage: " + lastMessage)
-  //     console.log("otherMessages: " + otherMessages)
-
-  //     return [
-  //       ...otherMessages,
-  //       {
-  //         ...lastMessage,
-  //         content: lastMessage.content + text,
-  //       },
-  //     ];
-  //   });
-
-  //   return reader.read().then(processText);
-  // });
-
   const handleRatingFilter = (e) => {
     const value = e.target.value;
 
@@ -215,20 +186,23 @@ export default function Home() {
     }
   };
 
+  const scrollToSearchScreen = (e) => {
+    const searchBox = document.getElementById("searchBox");
+    searchBox.scrollIntoView({ behavior: "smooth" });
+  }
+
   return (
     <Box
-      minHeight="100vh"
+      maxHeight="100vh"
       display="flex"
       flexDirection="column"
       bgcolor={linen}
       sx={{
         backgroundImage: 'url(https://wallpaperset.com/w/full/0/6/c/517269.jpg)',
-        backgroundSize: 'contain'
+        backgroundSize: 'contain',
+        backgroundPosition: 'center center'
       }}
     >
-      {/* <Container
-        width="100xw"
-      > */}
         <Box
           width="100vw"
           height="100vh"
@@ -237,9 +211,9 @@ export default function Home() {
           alignItems="center"
           // justifyContent="center"
           py={25}
-        >
 
-          <Stack direction="row" spacing={1} alignItems="center" justifyContent="center">
+        >
+          <Stack direction="column" spacing={6} alignItems="center" justifyContent="center">
             <Typography
               variant="h1"
               textAlign="center"
@@ -247,21 +221,118 @@ export default function Home() {
                 fontFamily: 'BlinkMacSystemFont',
                 mb: 3,
                 color: "white",
-                textShadow: "1px 1px black"
+                textShadow: "4px 4px black",
+                animation: "entranceTitle 3s ease-out",
               }}
             >
               The Professor Finder
             </Typography>
+            <SignedIn>
+              <Stack direction="row" spacing={3} alignItems="center" justifyContent="center">
+                <Button
+                  onClick={scrollToSearchScreen}
+                  sx={{
+                    p: 1,
+                    fontSize: 20,
+                    fontFamily: 'BlinkMacSystemFont',
+                    mb: 3,
+                    color: "white",
+                    textShadow: "2px 2px black",
+                    boxShadow: "2px 2px black",
+                    border: "2px solid white",
+                    borderRadius: "50px",
+                    animation: "entranceButton 3s ease-out",
+                    '&:hover': {
+                      transform: "scale(1.1)",
+                      bgcolor: linen,
+                      color: "black",
+                      textShadow: "none",
+                    }
+                  }}
+                >
+                  Get Started
+                </Button>
+              </Stack>
+            </SignedIn>
+            <SignedOut>
+              <Button
+                href="/signin"
+                sx={{
+                  p: 1,
+                  fontSize: 20,
+                  fontFamily: 'BlinkMacSystemFont',
+                  mb: 3,
+                  color: "white",
+                  textShadow: "2px 2px black",
+                  boxShadow: "2px 2px black",
+                  border: "2px solid white",
+                  borderRadius: "50px",
+                  animation: "entranceButton 3s ease-out",
+                  '&:hover': {
+                    transform: "scale(1.1)",
+                    bgcolor: linen,
+                    color: "black",
+                    textShadow: "none",
+                  }
+                }}
+              >
+                Get Started
+              </Button>
+            </SignedOut>
           </Stack>
         </Box>
         <Box
           width="100vw"
-          height="100vh"
-          bgcolor="black"
+          display="flex"
+          flexDirection="column"
+          alignItems="left"
+          justifyContent="left"
+          py={5}
+          pl={10}
+          pr={20}
+          sx={{
+            backgroundImage: 'url(https://wallpaperaccess.com/full/1856310.jpg)',
+            backgroundSize: 'cover',
+            backgroundPosition: 'center center'
+          }}
+        >
+          <Typography
+            variant="h2"
+            sx={{
+              fontFamily: 'BlinkMacSystemFont',
+              mt: 4,
+              mb: 4,
+              color: "white",
+              textShadow: "2px 2px 2px black",
+              animation: "entranceRight 2s ease-out",
+            }}
+          >
+            Getting Started
+          </Typography>
+          <Typography
+              variant="h5"
+              sx={{
+                fontFamily: 'BlinkMacSystemFont',
+                mb: 8,
+                color: "white",
+                textShadow: "1px 1px 1px black",
+                animation: "entranceRight 2s ease-out",
+              }}
+            >
+              1. Enter RateMyProfessors links to add professors.
+              <br></br>2. Describe the type of professor you are looking for.
+              <br></br>3. Filter results based on school, subject, and average rating.
+              <br></br>4. Receive personalized, AI-powered recommendations within seconds.
+            </Typography>
+        </Box>
+        <Box
+          id="searchBox"
+          width="100vw"
           display="flex"
           flexDirection="column"
           alignItems="center"
           p={5}
+          flexGrow={1}
         >
           <Typography
             variant="h2"
@@ -271,6 +342,7 @@ export default function Home() {
               mt: 8,
               mb: 4,
               color: "white",
+              animation: "entranceSearch 3s ease-in",
             }}
           >
             Find The <u>Perfect</u> Professor For You
@@ -283,8 +355,9 @@ export default function Home() {
             p={3}
             // spacing={3}
             bgcolor={sky_blue}
-            mb={8}
+            mb={10}
             boxShadow="10px 10px gray"
+            sx={{ animation: "entranceTitle 3s ease-out" }}
           >
             <Stack direction="row" alignItems="center" spacing={3} mb={2}>
               <Box bgcolor="white" display="flex" flexGrow={1}>
@@ -363,7 +436,7 @@ export default function Home() {
                   value={subjectFilter || ""}
                   onInputChange={handleSubjectFilter}
                   renderInput={(params) => (
-                    <Box bgcolor="white" border="1px solid black" borderRadius="5px">
+                  <Box bgcolor="white" border="1px solid black" borderRadius="5px">
 
                     <ThemeProvider theme={textfieldTheme}>
                       <TextField
@@ -372,19 +445,20 @@ export default function Home() {
                           "& input::placeholder": {
                               color: "black", // Set your desired color here
                             },
-                        }}
+                          color: "black",
+                          }}
                           placeholder="Ex. Choose a subject from the list"
                           inputMode="text"
                         />
                     </ThemeProvider>
-                    </Box>
+                  </Box>
                   )}
                 />
               </Grid>
               <Grid item xs={5} mr={1}>
                 <Typography>Minimum Rating (1-5)</Typography>
                 <ThemeProvider theme={textfieldTheme}>
-                <Box bgcolor="white" border="1px solid black" borderRadius="5px">
+                <Box width="200px" bgcolor="white" border="1px solid black" borderRadius="5px">
                   <TextField
                     error={ratingError}
                     helperText={
@@ -408,7 +482,7 @@ export default function Home() {
               <Grid item xs={5}>
                 <Typography># of results</Typography>
                 <ThemeProvider theme={textfieldTheme}>
-                <Box bgcolor="white" border="1px solid black" borderRadius="5px">
+                <Box width="200px" bgcolor="white" border="1px solid black" borderRadius="5px">
                   <TextField
                     error={numberError}
                     helperText={
@@ -440,7 +514,7 @@ export default function Home() {
                 mt: 6,
               }}
             >
-              <CircularProgress size={45} sx={{ color: dark_blue }} />
+              <CircularProgress size={45} sx={{ color: light_blue }} />
             </Box>
           )}
           {professorsJSON.map((professor) => (
@@ -454,7 +528,6 @@ export default function Home() {
             />
           ))}
         </Box>
-      {/* </Container> */}
     </Box>
   );
 }
