@@ -14,8 +14,6 @@ import {
 } from "@mui/material";
 import { useEffect, useState } from "react";
 import ProfCard from "./Components/profcard.js";
-import ExpandMoreIcon from "@mui/icons-material/ExpandMore";
-import PersonSearchIcon from '@mui/icons-material/PersonSearch';;
 import { createTheme, ThemeProvider } from "@mui/material/styles";
 import { SignedIn, SignedOut } from "@clerk/nextjs";
 import "./globals.css";
@@ -189,7 +187,7 @@ export default function Home() {
   const scrollToSearchScreen = (e) => {
     const searchBox = document.getElementById("searchBox");
     searchBox.scrollIntoView({ behavior: "smooth" });
-  }
+  };
 
   return (
     <Box
@@ -198,69 +196,53 @@ export default function Home() {
       flexDirection="column"
       bgcolor={linen}
       sx={{
-        backgroundImage: 'url(https://wallpaperset.com/w/full/0/6/c/517269.jpg)',
-        backgroundSize: 'contain',
-        backgroundPosition: 'center center'
+        backgroundImage:
+          "url(https://wallpaperset.com/w/full/0/6/c/517269.jpg)",
+        backgroundSize: "contain",
+        backgroundPosition: "center center",
       }}
     >
-        <Box
-          width="100vw"
-          height="100vh"
-          display="flex"
-          flexDirection="column"
+      <Box
+        width="100vw"
+        height="100vh"
+        display="flex"
+        flexDirection="column"
+        alignItems="center"
+        // justifyContent="center"
+        py={25}
+      >
+        <Stack
+          direction="column"
+          spacing={6}
           alignItems="center"
-          // justifyContent="center"
-          py={25}
-
+          justifyContent="center"
         >
-          <Stack direction="column" spacing={6} alignItems="center" justifyContent="center">
-            <Typography
-              variant="h1"
-              textAlign="center"
-              sx={{
-                fontFamily: 'BlinkMacSystemFont',
-                mb: 3,
-                color: "white",
-                textShadow: "4px 4px black",
-                animation: "entranceTitle 3s ease-out",
-              }}
+          <Typography
+            variant="h1"
+            textAlign="center"
+            sx={{
+              fontFamily: "BlinkMacSystemFont",
+              mb: 3,
+              color: "white",
+              textShadow: "4px 4px black",
+              animation: "entranceTitle 3s ease-out",
+            }}
+          >
+            The Professor Finder
+          </Typography>
+          <SignedIn>
+            <Stack
+              direction="row"
+              spacing={3}
+              alignItems="center"
+              justifyContent="center"
             >
-              The Professor Finder
-            </Typography>
-            <SignedIn>
-              <Stack direction="row" spacing={3} alignItems="center" justifyContent="center">
-                <Button
-                  onClick={scrollToSearchScreen}
-                  sx={{
-                    p: 1,
-                    fontSize: 20,
-                    fontFamily: 'BlinkMacSystemFont',
-                    mb: 3,
-                    color: "white",
-                    textShadow: "2px 2px black",
-                    boxShadow: "2px 2px black",
-                    border: "2px solid white",
-                    borderRadius: "50px",
-                    animation: "entranceButton 3s ease-out",
-                    '&:hover': {
-                      transform: "scale(1.1)",
-                      bgcolor: linen,
-                      color: "black",
-                      textShadow: "none",
-                    }
-                  }}
-                >
-                  Get Started
-                </Button>
-              </Stack>
-            </SignedIn>
-            <SignedOut>
               <Button
-                href="/signin"
+                onClick={scrollToSearchScreen}
                 sx={{
                   p: 1,
                   fontSize: 20,
-                  fontFamily: 'BlinkMacSystemFont',
+                  fontFamily: "BlinkMacSystemFont",
                   mb: 3,
                   color: "white",
                   textShadow: "2px 2px black",
@@ -268,197 +250,236 @@ export default function Home() {
                   border: "2px solid white",
                   borderRadius: "50px",
                   animation: "entranceButton 3s ease-out",
-                  '&:hover': {
+                  "&:hover": {
                     transform: "scale(1.1)",
                     bgcolor: linen,
                     color: "black",
                     textShadow: "none",
-                  }
+                  },
                 }}
               >
                 Get Started
               </Button>
-            </SignedOut>
-          </Stack>
-        </Box>
-        <Box
-          width="100vw"
-          display="flex"
-          flexDirection="column"
-          alignItems="left"
-          justifyContent="left"
-          py={5}
-          pl={10}
-          pr={20}
+            </Stack>
+          </SignedIn>
+          <SignedOut>
+            <Button
+              href="/signin"
+              sx={{
+                p: 1,
+                fontSize: 20,
+                fontFamily: "BlinkMacSystemFont",
+                mb: 3,
+                color: "white",
+                textShadow: "2px 2px black",
+                boxShadow: "2px 2px black",
+                border: "2px solid white",
+                borderRadius: "50px",
+                animation: "entranceButton 3s ease-out",
+                "&:hover": {
+                  transform: "scale(1.1)",
+                  bgcolor: linen,
+                  color: "black",
+                  textShadow: "none",
+                },
+              }}
+            >
+              Get Started
+            </Button>
+          </SignedOut>
+        </Stack>
+      </Box>
+      <Box
+        width="100vw"
+        display="flex"
+        flexDirection="column"
+        alignItems="left"
+        justifyContent="left"
+        py={5}
+        pl={10}
+        pr={20}
+        sx={{
+          backgroundImage: "url(https://wallpaperaccess.com/full/1856310.jpg)",
+          backgroundSize: "cover",
+          backgroundPosition: "center center",
+        }}
+      >
+        <Typography
+          variant="h2"
           sx={{
-            backgroundImage: 'url(https://wallpaperaccess.com/full/1856310.jpg)',
-            backgroundSize: 'cover',
-            backgroundPosition: 'center center'
+            fontFamily: "BlinkMacSystemFont",
+            mt: 4,
+            mb: 4,
+            color: "white",
+            textShadow: "2px 2px 2px black",
+            animation: "entranceRight 2s ease-out",
           }}
         >
-          <Typography
-            variant="h2"
-            sx={{
-              fontFamily: 'BlinkMacSystemFont',
-              mt: 4,
-              mb: 4,
-              color: "white",
-              textShadow: "2px 2px 2px black",
-              animation: "entranceRight 2s ease-out",
-            }}
-          >
-            Getting Started
-          </Typography>
-          <Typography
-              variant="h5"
-              sx={{
-                fontFamily: 'BlinkMacSystemFont',
-                mb: 8,
-                color: "white",
-                textShadow: "1px 1px 1px black",
-                animation: "entranceRight 2s ease-out",
-              }}
-            >
-              1. Enter RateMyProfessors links to add professors.
-              <br></br>2. Describe the type of professor you are looking for.
-              <br></br>3. Filter results based on school, subject, and average rating.
-              <br></br>4. Receive personalized, AI-powered recommendations within seconds.
-            </Typography>
-        </Box>
-        <Box
-          id="searchBox"
-          width="100vw"
-          display="flex"
-          flexDirection="column"
-          alignItems="center"
-          p={5}
-          flexGrow={1}
+          Getting Started
+        </Typography>
+        <Typography
+          variant="h5"
+          sx={{
+            fontFamily: "BlinkMacSystemFont",
+            mb: 8,
+            color: "white",
+            textShadow: "1px 1px 1px black",
+            animation: "entranceRight 2s ease-out",
+          }}
         >
+          1. Enter RateMyProfessors links to add professors.
+          <br></br>2. Describe the type of professor you are looking for.
+          <br></br>3. Filter results based on school, subject, and average
+          rating.
+          <br></br>4. Receive personalized, AI-powered recommendations within
+          seconds.
+        </Typography>
+      </Box>
+      <Box
+        id="searchBox"
+        width="100vw"
+        display="flex"
+        flexDirection="column"
+        alignItems="center"
+        p={5}
+        flexGrow={1}
+      >
+        <Typography
+          variant="h2"
+          textAlign="center"
+          sx={{
+            fontFamily: "BlinkMacSystemFont",
+            mt: 8,
+            mb: 4,
+            color: "white",
+            animation: "entranceSearch 3s ease-in",
+          }}
+        >
+          Find The <u>Perfect</u> Professor For You
+        </Typography>
+        <Stack
+          direction="column"
+          width="700px"
+          border="none"
+          borderRadius="10px"
+          p={3}
+          // spacing={3}
+          bgcolor={sky_blue}
+          mb={10}
+          boxShadow="10px 10px gray"
+          sx={{ animation: "entranceTitle 3s ease-out" }}
+        >
+          <Stack direction="row" alignItems="center" spacing={3} mb={2}>
+            <Box bgcolor="white" display="flex" flexGrow={1}>
+              <TextField
+                multiline
+                rows={3}
+                placeholder="Please describe the type of professor you are looking for."
+                value={message}
+                onChange={(e) => setMessage(e.target.value)}
+                variant="filled"
+                color="secondary"
+                fullWidth
+              />
+            </Box>
+            <Button
+              sx={{
+                height: "50px",
+                color: "black",
+                bgcolor: dark_blue,
+                px: 3,
+                border: "1px solid black",
+                borderRadius: "100px",
+                boxShadow: "1px 1px 1px black",
+                fontWeight: "bold",
+                "&:hover": {
+                  bgcolor: linen,
+                  transform: "scale(1.1)",
+                },
+              }}
+              onClick={sendMessage}
+              onChange={(e) => setMessage(e.target.value)}
+            >
+              Search
+            </Button>
+          </Stack>
           <Typography
-            variant="h2"
+            mb={0}
             textAlign="center"
             sx={{
-              fontFamily: 'BlinkMacSystemFont',
-              mt: 8,
-              mb: 4,
-              color: "white",
-              animation: "entranceSearch 3s ease-in",
+              textDecoration: "underline",
+              fontWeight: "bold",
             }}
           >
-            Find The <u>Perfect</u> Professor For You
+            Filters
           </Typography>
-          <Stack
-            direction="column"
-            width="700px"
-            border="none"
-            borderRadius="10px"
-            p={3}
-            // spacing={3}
-            bgcolor={sky_blue}
-            mb={10}
-            boxShadow="10px 10px gray"
-            sx={{ animation: "entranceTitle 3s ease-out" }}
-          >
-            <Stack direction="row" alignItems="center" spacing={3} mb={2}>
-              <Box bgcolor="white" display="flex" flexGrow={1}>
-                <TextField
-                  multiline
-                  rows={3}
-                  placeholder="Please describe the type of professor you are looking for."
-                  value={message}
-                  onChange={(e) => setMessage(e.target.value)}
-                  variant="filled"
-                  color="secondary"
-                  fullWidth
-                />
-              </Box>
-              <Button
-                sx={{
-                  height: "50px",
-                  color: "black",
-                  bgcolor: dark_blue,
-                  px: 3,
-                  border: "1px solid black",
-                  borderRadius: "100px",
-                  boxShadow: "1px 1px 1px black",
-                  fontWeight: "bold",
-                  "&:hover": {
-                    bgcolor: linen,
-                    transform: "scale(1.1)",
-                  },
-                }}
-                onClick={sendMessage}
-                onChange={(e) => setMessage(e.target.value)}
-              >
-                Search
-              </Button>
-            </Stack>
-            <Typography
-              mb={0}
-              textAlign="center"
-              sx={{
-                textDecoration: "underline",
-                fontWeight: "bold"
-              }}
-            >
-              Filters
-            </Typography>
-            <Grid container>
-              <Grid item xs={7} mr={1} mb={1}>
-                <Typography>School</Typography>
-                <Autocomplete
-                  options={schools}
-                  value={schoolFilter || ""}
-                  onInputChange={handleSchoolFilter}
-                  renderInput={(params) => (
-                    <Box bgcolor="white" border="1px solid black" borderRadius="5px">
-
+          <Grid container>
+            <Grid item xs={7} mr={1} mb={1}>
+              <Typography>School</Typography>
+              <Autocomplete
+                options={schools}
+                value={schoolFilter || ""}
+                onInputChange={handleSchoolFilter}
+                renderInput={(params) => (
+                  <Box
+                    bgcolor="white"
+                    border="1px solid black"
+                    borderRadius="5px"
+                  >
                     <ThemeProvider theme={textfieldTheme}>
                       <TextField
-                          {...params}
-                          sx={{
+                        {...params}
+                        sx={{
                           "& input::placeholder": {
-                              color: "black", // Set your desired color here
-                            },
+                            color: "black", // Set your desired color here
+                          },
                         }}
-                          placeholder="Ex. Choose a school from the list"
-                          inputMode="text"
-                        />
-                    </ThemeProvider>
-                    </Box>
-                  )}
-                />
-              </Grid>
-              <Grid item xs={4}>
-                <Typography>Subject</Typography>
-                <Autocomplete
-                  options={subjects}
-                  value={subjectFilter || ""}
-                  onInputChange={handleSubjectFilter}
-                  renderInput={(params) => (
-                  <Box bgcolor="white" border="1px solid black" borderRadius="5px">
-
-                    <ThemeProvider theme={textfieldTheme}>
-                      <TextField
-                          {...params}
-                          sx={{
-                          "& input::placeholder": {
-                              color: "black", // Set your desired color here
-                            },
-                          color: "black",
-                          }}
-                          placeholder="Ex. Choose a subject from the list"
-                          inputMode="text"
-                        />
+                        placeholder="Ex. Choose a school from the list"
+                        inputMode="text"
+                      />
                     </ThemeProvider>
                   </Box>
-                  )}
-                />
-              </Grid>
-              <Grid item xs={5} mr={1}>
-                <Typography>Minimum Rating (1-5)</Typography>
-                <ThemeProvider theme={textfieldTheme}>
-                <Box width="200px" bgcolor="white" border="1px solid black" borderRadius="5px">
+                )}
+              />
+            </Grid>
+            <Grid item xs={4}>
+              <Typography>Subject</Typography>
+              <Autocomplete
+                options={subjects}
+                value={subjectFilter || ""}
+                onInputChange={handleSubjectFilter}
+                renderInput={(params) => (
+                  <Box
+                    bgcolor="white"
+                    border="1px solid black"
+                    borderRadius="5px"
+                  >
+                    <ThemeProvider theme={textfieldTheme}>
+                      <TextField
+                        {...params}
+                        sx={{
+                          "& input::placeholder": {
+                            color: "black", // Set your desired color here
+                          },
+                          color: "black",
+                        }}
+                        placeholder="Ex. Choose a subject from the list"
+                        inputMode="text"
+                      />
+                    </ThemeProvider>
+                  </Box>
+                )}
+              />
+            </Grid>
+            <Grid item xs={5} mr={1}>
+              <Typography>Minimum Rating (1-5)</Typography>
+              <ThemeProvider theme={textfieldTheme}>
+                <Box
+                  width="200px"
+                  bgcolor="white"
+                  border="1px solid black"
+                  borderRadius="5px"
+                >
                   <TextField
                     error={ratingError}
                     helperText={
@@ -476,13 +497,18 @@ export default function Home() {
                     inputMode={"decimal"}
                     onChange={handleRatingFilter}
                   />
-                  </Box>
-                </ThemeProvider>
-              </Grid>
-              <Grid item xs={5}>
-                <Typography># of results</Typography>
-                <ThemeProvider theme={textfieldTheme}>
-                <Box width="200px" bgcolor="white" border="1px solid black" borderRadius="5px">
+                </Box>
+              </ThemeProvider>
+            </Grid>
+            <Grid item xs={5}>
+              <Typography># of results</Typography>
+              <ThemeProvider theme={textfieldTheme}>
+                <Box
+                  width="200px"
+                  bgcolor="white"
+                  border="1px solid black"
+                  borderRadius="5px"
+                >
                   <TextField
                     error={numberError}
                     helperText={
@@ -500,34 +526,39 @@ export default function Home() {
                     inputMode={"numeric"}
                     onChange={(e) => handleNumberFilter(e)}
                   />
-                  </Box>
-                </ThemeProvider>
-              </Grid>
+                </Box>
+              </ThemeProvider>
             </Grid>
-          </Stack>
-          {loading && (
+          </Grid>
+        </Stack>
+        <Box sx={{ position: "relative", height: "100%" }}>
+          {loading ? (
             <Box
               sx={{
                 display: "flex",
                 justifyContent: "center",
                 alignItems: "center",
-                mt: 6,
+                height: "100%",
               }}
             >
               <CircularProgress size={45} sx={{ color: light_blue }} />
             </Box>
+          ) : (
+            <Box sx={{ display: loading ? "none" : "block" }}>
+              {professorsJSON.map((professor) => (
+                <ProfCard
+                  key={professor.professor}
+                  link={professor.link}
+                  name={professor.professor}
+                  subject={professor.subject}
+                  rating={professor.rating}
+                  summary={professor.summary}
+                />
+              ))}
+            </Box>
           )}
-          {professorsJSON.map((professor) => (
-            <ProfCard
-              key={professor.professor}
-              link={professor.link}
-              name={professor.professor}
-              subject={professor.subject}
-              rating={professor.rating}
-              summary={professor.summary}
-            />
-          ))}
         </Box>
+      </Box>
     </Box>
   );
 }

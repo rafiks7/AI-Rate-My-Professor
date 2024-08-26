@@ -43,7 +43,7 @@ Here is an example structure:
   professors:
  [
   {
-    professor: "Dr. Emily Stone",
+    professor: "Emily Stone" (Do not include titles in this property),
     subject: "Computer Science",
     rating: 4.8,
     summary: "Dr. Stone is a great professor who explains concepts clearly. Her lectures are engaging, and she is always willing to help students during office hours."
@@ -51,8 +51,15 @@ Here is an example structure:
   }
   ]
 }
+  
 
   Your entire response/output is going to consist of a single JSON object {}, and you will NOT wrap it within JSON md markers
+
+  NOTE: Be ready to process an input where there are no professors to match the user's description. 
+  In this case, you should still return a JSON object with a professors key that contains an empty array as follows:
+  {
+    "professors": []
+  }
 `;
 
 //This is a system prompt for a secondary AI that transforms user input into a structured format suitable for vector embedding.
