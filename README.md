@@ -4,6 +4,9 @@ Prof-Finder-AI helps students find the best professors based on course reviews b
 
 Visit: [Prof-Finder-AI](https://ai-rate-my-professor-lemon.vercel.app)
 
+## Preview
+![Prof Finder](preview.png)
+
 ## Features
 - **AI-Powered Search**: Find professors by matching embedded reviews.
 - **User-Friendly Interface**: Simple, intuitive search for professor recommendations.
